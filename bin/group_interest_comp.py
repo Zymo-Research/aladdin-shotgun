@@ -3,6 +3,7 @@ import pandas as pd
 import argparse
 import re
 import json
+import unicodedata
 
 #the following function takes in all taxonomy files and create a non-redundant taxonomy file
 def group_interest_comp(excel, level6, level7):
@@ -25,16 +26,31 @@ def group_interest_comp(excel, level6, level7):
 
         for sheet,num in zip(sheetnames, range(1,len(sheetnames))):
             df = pd.read_excel(xls, sheet)
-            df = df[["ID", "type"]]
+            df = df[["ID", "type", "Other_name"]]
             #for every sheet, place genus specific selections and species specific selections into a list
             genuslist = df[df["type"] == "genus"]
-            genuslist = list(genuslist["ID"])
             specieslist = df[df["type"] == "species"]
-            specieslist = list(specieslist["ID"]) 
+            #specieslist = list(specieslist["ID"]) 
+
+            othernamegenus = []
+            for row in genuslist["Other_name"].dropna():
+                genusbyrow = row.rsplit(";")
+                othernamegenus = othernamegenus+genusbyrow
+            genuslist = list(genuslist["ID"])
+            genuslist = genuslist+othernamegenus
+
+            othernamespecies = []
+            for row in specieslist["Other_name"].dropna():
+                speciesbyrow = row.rsplit(";")
+                othernamespecies = othernamespecies+speciesbyrow
+            specieslist = list(specieslist["ID"])
+            specieslist = specieslist + othernamespecies
 
             genuslist = '|'.join(genuslist)
             specieslist = '|'.join(specieslist)
-             
+            genuslist = unicodedata.normalize("NFKD", genuslist)
+            specieslist = unicodedata.normalize("NFKD", specieslist)
+
             if genuslist=="":
                 csvhalf1_genus = genuscsv.iloc[:0,:].copy()
             else:

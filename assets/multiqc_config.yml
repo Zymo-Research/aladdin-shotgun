@@ -370,6 +370,7 @@ extra_fn_clean_exts:
   - ".settings"
   - ".bbduk"
   - ".unmapped"
+  - "_groupinterest_comp.csv"
   - type: regex
     pattern: "_filtered.log$"
     module: filtlong

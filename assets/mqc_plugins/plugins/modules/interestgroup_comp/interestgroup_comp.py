@@ -34,7 +34,7 @@ class MultiqcModule(BaseMultiqcModule):
             # Parse the data file
             parsed_data = pd.read_csv(f["f"], sep=",", index_col=0)
             if parsed_data is not None:
-                self.data_dict[f["fn"]] = parsed_data
+                self.data_dict[f["s_name"]] = parsed_data
             else:
                 log.debug("Could not parse interest group composition data in {}".format(f["fn"]))
                 raise UserWarning
@@ -81,9 +81,6 @@ class MultiqcModule(BaseMultiqcModule):
                     color = color + color_21
                 else:
                     color = color[0:len(data)]
-                    print(len(data))
-                    print(data)
-                    print(color)
                     full_datacolor = pd.DataFrame(index=data.index)
                     full_datacolor['color'] = color
 

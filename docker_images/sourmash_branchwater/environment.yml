@@ -1,0 +1,10 @@
+name: sourmash
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - sourmash=4.8.8=hdfd78af_0
+    - sourmash_plugin_branchwater=0.9.3=py312h795d961_0
+    - rust=1.77.2=h70c747d_0
+    - python=3.12.3=hab00c5b_0_cpython

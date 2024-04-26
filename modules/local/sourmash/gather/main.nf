@@ -1,7 +1,6 @@
 process SOURMASH_GATHER {
     tag "$meta.id"
-    label 'process_high_memory'
-    container 'quay.io/biocontainers/sourmash:4.8.2--hdfd78af_0'
+    container 'zxl124/sourmash_branchwater:0.9.3'
     if (params.ignore_failed_samples) {
         errorStrategy { task.attempt>1 ? 'ignore' : 'retry' }
     }
@@ -18,10 +17,23 @@ process SOURMASH_GATHER {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"    
     """
-    DB=`find -L "sourmash_database" -name "*${params.sourmash_kmersize}.zip"`
+    DB=`find -L "sourmash_database" -name "*k${params.sourmash_kmersize}.zip"`
     LINEAGE=`find -L "sourmash_database" -name "*.csv"`
 
-    sourmash gather $sketch \$DB --dna --ksize ${params.sourmash_kmersize} --threshold-bp ${params.sourmash_threshold_bp} -o ${prefix}_sourmashgather.csv 1> ${prefix}_sourmashgather.log
+    sourmash scripts fastgather \\
+        $sketch \\
+        \$DB \\
+        --ksize ${params.sourmash_kmersize} \\
+        --threshold-bp ${params.sourmash_threshold_bp} \\
+        -o ${prefix}_fastgather.csv 2> ${prefix}_fastgather.log
+    sourmash gather \\
+        $sketch \\
+        \$DB \\
+        --dna \\
+        --ksize ${params.sourmash_kmersize} \\
+        --threshold-bp ${params.sourmash_threshold_bp} \\
+        -o ${prefix}_sourmashgather.csv \\
+        --picklist ${prefix}_fastgather.csv:match_name:ident 1> ${prefix}_sourmashgather.log
     sourmash tax annotate -g ${prefix}_sourmashgather.csv -t \$LINEAGE 2> ${prefix}_sourmashannotate.log
     
     cat <<-END_VERSIONS > versions.yml

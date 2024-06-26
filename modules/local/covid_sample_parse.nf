@@ -15,7 +15,7 @@ process COVID_SAMPLE_PARSE {
 
     script:
     """
-    id_covid_samples.py ${filtered_counts_ch} ${covid_threshold_ch} >> covid_samples.txt
+    id_covid_samples.py ${filtered_counts_ch} ${covid_threshold_ch} > covid_samples.txt
     """
 
 }

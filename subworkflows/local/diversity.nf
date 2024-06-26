@@ -105,6 +105,6 @@ workflow DIVERSITY {
     tables       = QIIME_DATAMERGE.out.filtered_counts_qza
     taxonomy     = QIIME_DATAMERGE.out.taxonomy_qza
     metadata     = QIIME_METADATAFILTER.out.ref_comp_metadata
-    filtered_counts = QIIME_DATAMERGE.out.filtered_counts_collapsed_tsv
+    filtered_counts_ch = Channel.fromPath(QIIME_DATAMERGE.out.filtered_counts_collapsed_tsv)
     warning      = ch_warning_message
 }

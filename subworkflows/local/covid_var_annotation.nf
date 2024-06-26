@@ -11,11 +11,11 @@ include { DEMIX as COVID_VARID_DEMIX; AGGREGATE as COVID_VARID_AGGREGATE    } fr
 
 workflow COVID_VAR_ANNOTATION{
     take:
-    channel taxonomy_sample_counts
-    channel covid_threshold
-    channel reads
-    channel kraken_db
-    channel ref_genome
+    channel filtered_counts_ch
+    channel covid_threshold_ch
+    channel fastq
+    channel covid_kraken_ch
+    channel covid_ref_ch
 
     main:
     COVID_SAMPLE_PARSE(taxonomy_sample_counts,covid_threshold)

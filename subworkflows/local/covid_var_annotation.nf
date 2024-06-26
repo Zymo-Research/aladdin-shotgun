@@ -13,16 +13,16 @@ workflow COVID_VAR_ANNOTATION{
     take:
     channel filtered_counts_ch
     channel covid_threshold_ch
-    channel fastq
+    channel covid_reads_ch
     channel covid_kraken_ch
     channel covid_ref_ch
 
     main:
-    COVID_SAMPLE_PARSE(taxonomy_sample_counts,covid_threshold)
-    COVID_SAMPLE_EXTRACTION(COVID_SAMPLE_PARSE.out,reads)
-    COVID_READ_EXTRACTION(COVID_SAMPLE_EXTRACTION.out, kraken_db)
-    COVID_ALIGNMENT(COVID_READ_EXTRACTION.out, ref_genome)
-    DEMIX(COVID_ALIGNMENT.out, ref_genome)
+    COVID_SAMPLE_PARSE(filtered_counts_ch,covid_threshold_ch)
+    COVID_SAMPLE_EXTRACTION(COVID_SAMPLE_PARSE.out,covid_reads_ch)
+    COVID_READ_EXTRACTION(COVID_SAMPLE_EXTRACTION.out, covid_kraken_ch)
+    COVID_ALIGNMENT(COVID_READ_EXTRACTION.out, covid_ref_ch)
+    DEMIX(COVID_ALIGNMENT.out, covid_ref_ch)
     AGGREGATE(DEMIX.out.demixed)
 
     AGGREGATE.out.map{ "${params.outdir}/freyja/" + it.getName() }

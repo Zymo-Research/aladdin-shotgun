@@ -85,6 +85,7 @@ include { LONGREAD_HOSTREMOVAL          } from '../subworkflows/local/longread_h
 include { SHORTREAD_COMPLEXITYFILTERING } from '../subworkflows/local/shortread_complexityfiltering'
 include { PROFILING                     } from '../subworkflows/local/profiling'
 include { DIVERSITY                     } from '../subworkflows/local/diversity'
+include { COVID_VAR_ANNOTATION          } from '../subworkflows/local/covid_var_annotation'
 include { REFMERGE_DIVERSITY            } from '../subworkflows/local/refmerge_diversity'
 include { VISUALIZATION_KRONA           } from '../subworkflows/local/visualization_krona'
 include { STANDARDISATION_PROFILES      } from '../subworkflows/local/standardisation_profiles'

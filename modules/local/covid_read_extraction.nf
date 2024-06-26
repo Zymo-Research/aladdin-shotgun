@@ -3,7 +3,7 @@ Extract COVID reads from matched samples (and remove any host & baterial reads)
 to reduce computation time during read alignment
 */ 
 
-process kraken2 {
+process COVID_READ_EXTRACTION {
     tag "$meta.id"
     label 'process_medium'
     container 'quay.io/biocontainers/kraken2:2.1.3--pl5321hdcf5f25_1'

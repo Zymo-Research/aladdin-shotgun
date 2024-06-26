@@ -285,6 +285,15 @@ workflow TAXPROFILER {
     ch_warnings = ch_warnings.mix( DIVERSITY.out.warning )
 
     /*
+        SUBWORKFLOW: Covid variant analysis with freyja
+    */
+    covid_kraken_ch = Channel.fromPath(params.covid_kraken_db)
+    covid_ref_ch = Channel.fromPath(params.covid_reference)
+    covid_threshold_ch = Channel.Value(params.covid_threshold)
+    qiime_filtered_counts_ch = Channel.fromPath(QIIME_DATAMERGE.out.filtered_counts_collapsed_tsv)
+    COVID_VAR_ANNOTATION(qiime_filtered_counts_ch, covid_threshold_ch, INPUT_CHECK.out.fastq, covid_kraken_ch, covid_ref_ch)
+
+    /*
         SUBWORKFLOW: DIVERSITY with reference database
     */
     if ( params.aladdin_ref_dataset ){

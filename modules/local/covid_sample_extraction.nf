@@ -20,8 +20,8 @@ process COVID_SAMPLE_EXTRACTION {
     covid_samples=\$(cat ${covid_samples_file} | tr '\\n' ' ')
     
     # Check if the sample_id is in covid_samples
-    if [[ "\$covid_samples" =~ \$meta.id ]]; then
-        echo "${meta.id} ${reads}"
+    if [[ "\$covid_samples" =~ ${meta.id} ]]; then
+        echo "${meta} ${reads}"
     fi
     """
 }

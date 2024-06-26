@@ -3,7 +3,7 @@ Align COVID reads from each matched sample to the ref genome
 and generate a sorted and indexed bam file 
 */ 
 
-process bwa {
+process COVID_ALIGNMENT {
     tag "${meta.id}"
     label 'process_medium'
     container 'quay.io/biocontainers/bwa:0.7.3a--hed695b0_5' 

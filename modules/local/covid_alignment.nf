@@ -10,7 +10,7 @@ process COVID_ALIGNMENT {
 
     input:
     tuple val(sample_id), path(covid_reads)
-    path(reference)
+    path(covid_ref_ch)
 
     output:
     tuple val(meta), path("*.bam")
@@ -18,7 +18,7 @@ process COVID_ALIGNMENT {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}" 
     """
-    bwa index ${reference} 
-    bwa mem -t 32 ${reference} ${covid_reads[0]} ${covid_reads[1]} | samtools view -Sb - | samtools sort -o "${prefix}.bam" -
+    bwa index ${covid_ref_ch} 
+    bwa mem -t 32 ${covid_ref_ch} ${covid_reads[0]} ${covid_reads[1]} | samtools view -Sb - | samtools sort -o "${prefix}.bam" -
     """
 }

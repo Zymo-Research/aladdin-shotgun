@@ -13,13 +13,13 @@ workflow COVID_VAR_ANNOTATION{
     take:
     filtered_counts_ch
     covid_threshold_ch
-    covid_reads_ch
+    reads_ch
     covid_kraken_ch
     covid_ref_ch
 
     main:
     COVID_SAMPLE_PARSE(filtered_counts_ch,covid_threshold_ch)
-    COVID_SAMPLE_EXTRACTION(COVID_SAMPLE_PARSE.out,covid_reads_ch)
+    COVID_SAMPLE_EXTRACTION(COVID_SAMPLE_PARSE.out,reads_ch)
     COVID_READ_EXTRACTION(COVID_SAMPLE_EXTRACTION.out, covid_kraken_ch)
     COVID_ALIGNMENT(COVID_READ_EXTRACTION.out, covid_ref_ch)
     DEMIX(COVID_ALIGNMENT.out, covid_ref_ch)

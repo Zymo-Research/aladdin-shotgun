@@ -10,7 +10,7 @@ process COVID_READ_EXTRACTION {
 
     input:
     tuple val(meta), path(reads)
-    path(kraken_db)
+    path(covid_kraken_ch)
 
     output:
     tuple val(meta), path("*{1,2}.fq.gz")
@@ -18,6 +18,6 @@ process COVID_READ_EXTRACTION {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}" 
     """
-    kraken2 --db ${kraken_db} --threads 32 --paired ${reads[0]} ${reads[1]} --classified-out ${prefix}#.fq.gz > /dev/null
+    kraken2 --db ${covid_kraken_ch} --threads 32 --paired ${reads[0]} ${reads[1]} --classified-out ${prefix}#.fq.gz > /dev/null
     """
 }

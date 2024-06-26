@@ -10,7 +10,7 @@ process DEMIX {
 
     input:
     tuple val(meta), path(bam)
-    path(reference)
+    path(covid_ref_ch)
 
     output:
     path("variants_files/*.variants.tsv")
@@ -22,7 +22,7 @@ process DEMIX {
     """
     mkdir -p variants_files depth_files demix_files
 
-    freyja variants ${bam} --variants variants_files/${prefix}.variants.tsv --depths depth_files/${prefix}.depth --ref ${reference}
+    freyja variants ${bam} --variants variants_files/${prefix}.variants.tsv --depths depth_files/${prefix}.depth --ref ${covid_ref_ch}
     
     freyja update
 
@@ -36,13 +36,13 @@ process AGGREGATE {
     container 'quay.io/biocontainers/freyja:1.5.1--pyhdfd78af_0'
 
     input:
-    path(demix)
+    path(demixed)
 
     output: 
     path("covid_variants.tsv")
 
     script:
     """
-    freyja aggregate ${demix} --output covid_variants.tsv
+    freyja aggregate ${demixed} --output covid_variants.tsv
     """
 }

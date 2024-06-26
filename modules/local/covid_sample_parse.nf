@@ -7,15 +7,15 @@ process COVID_SAMPLE_PARSE {
     label 'process_low'
 
     input:
-    path(taxonomy_sample_counts)
-    val(threshold)
+    path(filtered_counts_ch)
+    val(covid_threshold_ch)
 
     output:
     path('covid_samples.txt')
 
     script:
     """
-    python id_covid_samples.py ${taxonomy_sample_counts} ${threshold} >> covid_samples.txt
+    python id_covid_samples.py ${filtered_counts_ch} ${covid_threshold_ch} >> covid_samples.txt
     """
 
 }

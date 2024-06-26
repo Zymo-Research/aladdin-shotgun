@@ -6,7 +6,9 @@ include { COVID_SAMPLE_PARSE                              } from '../../modules/
 include { COVID_SAMPLE_EXTRACTION                         } from '../../modules/local/covid_sample_extraction'
 include { COVID_READ_EXTRACTION                           } from '../../modules/local/covid_read_extraction'
 include { COVID_ALIGNMENT                                 } from '../../modules/local/covid_alignment'
-include { COVID_VARID.DEMIX, COVID_VARID.AGGREGATE        } from '../../modules/local/covid_varID'
+include { 
+          COVID_VARID.DEMIX, 
+          COVID_VARID.AGGREGATE                           } from '../../modules/local/covid_varID'
 
 workflow COVID_VAR_ANNOTATION{
     take:

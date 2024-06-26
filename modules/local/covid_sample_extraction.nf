@@ -19,7 +19,7 @@ process COVID_SAMPLE_EXTRACTION {
     def covid_samples = covid_samples_file.text.splitCsv(sep:'\\n', strip:true).collect { it[0] }.toSet()
 
     // Filter the reads tuple
-    if (covid_samples.contains(sample_id)) {
-        covid_reads_ch = tuple(sample_id, reads)
+    if (covid_samples.contains(meta.id)) {
+        emit(tuple(meta, reads))
     }
 }

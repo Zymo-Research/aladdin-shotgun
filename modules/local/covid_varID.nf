@@ -3,7 +3,7 @@ Demix and deconvolute each of the mixed samples and
 identify the abundance of COVID variants in each sample
 */ 
 
-process freyja {
+process DEMIX {
     tag "$meta.id"
     label 'process_medium'
     container 'quay.io/biocontainers/freyja:1.5.1--pyhdfd78af_0'
@@ -15,7 +15,7 @@ process freyja {
     output:
     path("variants_files/*.variants.tsv")
     path("depth_files/*.depth")
-    path("demix_files/*.output")
+    path("demix_files/*.output"), emit: demixed
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"    
@@ -31,18 +31,18 @@ process freyja {
     """
 }
 
-process aggregate {
+process AGGREGATE {
     label 'process_low'
     container 'quay.io/biocontainers/freyja:1.5.1--pyhdfd78af_0'
 
     input:
-    path("demix_files/")
+    path(demix)
 
     output: 
-    path("covid_variants.tsv"), emit: aggregated_variants
+    path("covid_variants.tsv")
 
     script:
     """
-    freyja aggregate demix_files/ --output covid_variants.tsv
+    freyja aggregate ${demix} --output covid_variants.tsv
     """
 }

@@ -21,7 +21,7 @@ process COVID_SAMPLE_EXTRACTION {
     
     # Check if the sample_id is in covid_samples
     if [[ "\$covid_samples" =~ \$meta.id ]]; then
-        echo "${meta} ${reads}"
+        echo "${meta.id} ${reads}"
     fi
     """
 }

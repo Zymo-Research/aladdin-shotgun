@@ -25,6 +25,6 @@ workflow COVID_VAR_ANNOTATION{
     COVID_VARID_DEMIX(COVID_ALIGNMENT.out, covid_ref_ch)
     COVID_VARID_AGGREGATE(COVID_VARID_DEMIX.out.demixed)
 
-    AGGREGATE.out.map{ "${params.outdir}/freyja/" + it.getName() }
+    COVID_VARID_AGGREGATE.out.map{ "${params.outdir}/freyja/" + it.getName() }
 
 }

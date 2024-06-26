@@ -15,7 +15,7 @@ process COVID_SAMPLE_PARSE {
 
     script:
     """
-    id_covid_samples.py ${taxonomy_sample_counts} ${threshold} >> covid_samples.txt
+    python id_covid_samples.py ${taxonomy_sample_counts} ${threshold} >> covid_samples.txt
     """
 
 }

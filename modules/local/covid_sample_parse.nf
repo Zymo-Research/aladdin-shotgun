@@ -11,7 +11,7 @@ process COVID_SAMPLE_PARSE {
     val(covid_threshold_ch)
 
     output:
-    path('covid_samples.txt'), emit:covid_samples_file
+    path 'covid_samples.txt', emit: covid_samples_file
 
     script:
     """

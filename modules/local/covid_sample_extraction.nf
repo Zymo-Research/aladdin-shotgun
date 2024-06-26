@@ -8,18 +8,20 @@ process COVID_SAMPLE_EXTRACTION {
     label 'process_low'
 
     input:
-    path(covid_samples_file)
+    path covid_samples_file
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path(reads)
 
-    exec:
-    // Read COVID sample IDs into a set
-    def covid_samples = covid_samples_file.text.splitCsv(sep:'\\n', strip:true).collect { it[0] }.toSet()
-
-    // Filter the reads tuple
-    if (covid_samples.contains(meta.id)) {
-        emit(tuple(meta, reads))
-    }
+    script:
+    """
+    # Read COVID sample IDs into a set
+    covid_samples=\$(cat ${covid_samples_file} | tr '\\n' ' ')
+    
+    # Check if the sample_id is in covid_samples
+    if [[ "\$covid_samples" =~ \$meta.id ]]; then
+        echo "${meta} ${reads}"
+    fi
+    """
 }

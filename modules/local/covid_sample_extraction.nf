@@ -8,7 +8,7 @@ process COVID_SAMPLE_EXTRACTION {
 
     input:
     path(covid_samples_file)
-    channel reads_ch
+    reads_ch
 
     output:
     channel covid_reads_ch

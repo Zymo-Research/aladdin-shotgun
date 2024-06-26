@@ -12,7 +12,7 @@ include { DEMIX as COVID_VARID_DEMIX; AGGREGATE as COVID_VARID_AGGREGATE    } fr
 workflow COVID_VAR_ANNOTATION{
     take:
     filtered_counts_ch
-    val covid_threshold_ch
+    covid_threshold_ch
     reads_ch
     covid_kraken_ch
     covid_ref_ch

@@ -291,7 +291,7 @@ workflow TAXPROFILER {
     covid_kraken_ch = Channel.fromPath(params.covid_kraken_db)
     covid_ref_ch = Channel.fromPath(params.covid_reference)
     covid_threshold_ch = Channel.Value(params.covid_threshold)
-    filtered_counts_ch = Channel.fromPath(DIVERSITY.out.filtered_counts)
+    filtered_counts_ch = DIVERSITY.out.filtered_counts
     covid_reads_ch = INPUT_CHECK.out.fastq
     COVID_VAR_ANNOTATION( filtered_counts_ch, covid_threshold_ch, covid_reads_ch, covid_kraken_ch, covid_ref_ch )
 

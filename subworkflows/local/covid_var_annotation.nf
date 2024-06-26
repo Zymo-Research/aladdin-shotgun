@@ -22,8 +22,8 @@ workflow COVID_VAR_ANNOTATION{
     COVID_SAMPLE_EXTRACTION(COVID_SAMPLE_PARSE.out,reads_ch)
     COVID_READ_EXTRACTION(COVID_SAMPLE_EXTRACTION.out, covid_kraken_ch)
     COVID_ALIGNMENT(COVID_READ_EXTRACTION.out, covid_ref_ch)
-    DEMIX(COVID_ALIGNMENT.out, covid_ref_ch)
-    AGGREGATE(DEMIX.out.demixed)
+    COVID_VARID_DEMIX(COVID_ALIGNMENT.out, covid_ref_ch)
+    COVID_VARID_AGGREGATE(COVID_VARID_DEMIX.out.demixed)
 
     AGGREGATE.out.map{ "${params.outdir}/freyja/" + it.getName() }
 

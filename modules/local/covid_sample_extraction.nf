@@ -4,21 +4,22 @@ from these COVID samples.
 */ 
 
 process COVID_SAMPLE_EXTRACTION {
+    tag "$meta.id"
     label 'process_low'
 
     input:
     path(covid_samples_file)
-    reads_ch
+    tuple val(meta), path(reads)
 
     output:
-    channel covid_reads_ch
+    tuple val(meta), path(reads)
 
     exec:
     // Read COVID sample IDs into a set
-    def covid_samples = covid_samples_file.text.split("\n").collect { it.trim() }.toSet()
+    def covid_samples = covid_samples_file.text.splitCsv(sep:'\\n', strip:true).collect { it[0] }.toSet()
 
-    // Filter the reads channel
-    covid_reads_ch = reads_ch.filter { sample_id, reads -> 
-        covid_samples.contains(sample_id)
+    // Filter the reads tuple
+    if (covid_samples.contains(sample_id)) {
+        covid_reads_ch = tuple(sample_id, reads)
     }
 }

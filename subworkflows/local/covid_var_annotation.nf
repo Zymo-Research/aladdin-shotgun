@@ -2,11 +2,11 @@
 // Run covid variant identification from mixed sample dataset
 //
 
-include { COVID_SAMPLE_PARSE } from './modules/covid_sample_parse.nf'
-include { COVID_SAMPLE_EXTRACTION } from './modules/covid_sample_extraction.nf'
-include { COVID_READ_EXTRACTION } from './modules/covid_read_extraction.nf'
-include { COVID_ALIGNMENT } from './modules/covid_alignment.nf'
-include { COVID_VARID } from './modules/covid_varID.nf'
+include { COVID_SAMPLE_PARSE        } from './modules/covid_sample_parse'
+include { COVID_SAMPLE_EXTRACTION   } from './modules/covid_sample_extraction'
+include { COVID_READ_EXTRACTION     } from './modules/covid_read_extraction'
+include { COVID_ALIGNMENT           } from './modules/covid_alignment'
+include { COVID_VARID               } from './modules/covid_varID'
 
 workflow COVID_VAR_ANNOTATION{
     take:

@@ -4,6 +4,7 @@ from these COVID samples.
 */ 
 
 process COVID_SAMPLE_EXTRACTION {
+    cache false
     tag "$meta.id"
     label 'process_low'
 

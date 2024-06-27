@@ -8,7 +8,7 @@ import pandas as pd
 def parse_args(args=None):
     Description = "Examine qiime filtered counts file and identify COVID samples"
 
-    Epilog = "Example usage: id_covid_samples.py <FILE_IN> <DETECTION_THRESHOLD>"
+    Epilog = "Example usage: python id_covid_samples.py <FILE_IN> <DETECTION_THRESHOLD>"
 
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
     parser.add_argument("FILE_IN", help="Input qiime filtered counts file.")

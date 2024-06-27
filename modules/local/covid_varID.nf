@@ -43,6 +43,6 @@ process AGGREGATE {
 
     script:
     """
-    freyja aggregate ${demix_dir} --output covid_variants.tsv
+    freyja aggregate ${demix_dir}/ --output covid_variants.tsv
     """
 }

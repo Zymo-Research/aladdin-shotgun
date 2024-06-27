@@ -36,13 +36,13 @@ process AGGREGATE {
     container 'quay.io/biocontainers/freyja:1.5.1--pyhdfd78af_0'
 
     input:
-    path(demixed)
+    path dir(inputDir) from "demix_files"
 
     output: 
     path("covid_variants.tsv")
 
     script:
     """
-    freyja aggregate ${demixed} --output covid_variants.tsv
+    freyja aggregate ${inputDir} --output covid_variants.tsv
     """
 }

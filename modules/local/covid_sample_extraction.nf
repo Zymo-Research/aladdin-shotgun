@@ -15,12 +15,18 @@ process COVID_SAMPLE_EXTRACTION {
     output:
     tuple val(meta), path(reads), emit: covid_reads_ch
 
-    exec:
-    def covidSamples = covid_samples_file.text.readLines().collect { it.trim() as String }.toSet()
+    script:
+    """
+    covidSamples=($(cat ${covid_samples_file}))
 
-    // Check if the sample_id is in covid_samples
-    if (covidSamples.contains(meta.id)) {
-        println "${meta.id}: ${reads}"
-        emit(covid_reads_ch, tuple(meta, reads))
-    }
+    samples=()
+
+    for sample_id in "${covidSamples[@]}"; do
+        if [[ "${sample_id}" == "${meta.id}" ]]; then
+            samples+=($(tuple(meta, reads)))
+        fi
+    done
+
+    emit(covid_reads_ch, samples)
+    """
 }

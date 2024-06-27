@@ -20,7 +20,13 @@ workflow COVID_VAR_ANNOTATION{
     main:
     COVID_SAMPLE_PARSE(filtered_counts_ch,covid_threshold_ch)
     COVID_SAMPLE_EXTRACTION(COVID_SAMPLE_PARSE.out.covid_samples_file,reads_ch)
-    COVID_READ_EXTRACTION(COVID_SAMPLE_EXTRACTION.out.covid_reads_ch, covid_kraken_ch)
+
+    filtered_reads_ch = COVID_SAMPLE_EXTRACTION.out.covid_reads_ch
+        .filter { meta, reads, status_file ->
+            file(status_file).text.trim() == "MATCH"
+            }
+
+    COVID_READ_EXTRACTION(filtered_reads_ch, covid_kraken_ch)
     COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch)
     COVID_ALIGNMENT_SAMTOOLS(COVID_ALIGNMENT_BWA.out)
     COVID_VARID_DEMIX(COVID_ALIGNMENT_SAMTOOLS.out, covid_ref_ch)

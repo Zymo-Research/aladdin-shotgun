@@ -16,7 +16,7 @@ process COVID_SAMPLE_EXTRACTION {
     tuple val(meta), path(reads), emit: covid_reads_ch
 
     exec:
-    def covidSamples = file(covid_samples_file).text.readLines().collect { it.trim() as String }.toSet()
+    def covidSamples = covid_samples_file.text.readLines().collect { it.trim() as String }.toSet()
 
     // Check if the sample_id is in covid_samples
     if (covidSamples.contains(meta.id)) {

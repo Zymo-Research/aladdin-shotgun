@@ -40,3 +40,4 @@ process SAMTOOLS {
     """
     samtools view -Sb ${sam} | samtools sort -o "${prefix}.bam" -
     """
+}

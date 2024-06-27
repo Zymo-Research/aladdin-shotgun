@@ -10,7 +10,7 @@ process COVID_SAMPLE_EXTRACTION {
 
     input:
     path covid_samples_file
-    tuple val(meta), path(reads) from reads_ch
+    tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path(reads), emit: covid_reads_ch

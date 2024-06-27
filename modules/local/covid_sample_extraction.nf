@@ -10,20 +10,17 @@ process COVID_SAMPLE_EXTRACTION {
 
     input:
     path covid_samples_file
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads) from reads_ch
 
     output:
     tuple val(meta), path(reads), emit: covid_reads_ch
 
-    script:
-    """
-    # Read COVID sample IDs into a set
-    covid_samples=\$(cat ${covid_samples_file} | tr '\\n' ' ')
-    
-    # Check if the sample_id is in covid_samples
-    if [[ "\$covid_samples" =~ "${meta.id}" ]]; then
-        echo "${meta.id},${reads[0]},${reads[1]}" >> covid_sample_info.csv
-    
-    fi
-    """
+    exec:
+    def covidSamples = file(covid_samples_file).text.readLines().collect { it.trim() as String }.toSet()
+
+    // Check if the sample_id is in covid_samples
+    if (covidSamples.contains(meta.id)) {
+        println "${meta.id}: ${reads}"
+        emit(covid_reads_ch, tuple(meta, reads))
+    }
 }

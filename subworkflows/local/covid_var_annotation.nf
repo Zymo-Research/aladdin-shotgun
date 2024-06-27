@@ -20,18 +20,21 @@ workflow COVID_VAR_ANNOTATION{
     main:
     COVID_SAMPLE_PARSE(filtered_counts_ch, covid_threshold_ch)
 
-    covid_samples = COVID_SAMPLE_PARSE.out.covid_samples_file.collectFile(name: 'all_covid_samples.txt')
+//    covid_samples = COVID_SAMPLE_PARSE.out.covid_samples_file.collectFile(name: 'all_covid_samples.txt')
+
+    // Read the contents of the covid_samples file into a channel
+    covid_samples_ch = COVID_SAMPLE_PARSE.out.covid_samples_file
+        .splitText()  
+        .map { it.trim() }  
+        .collect() 
 
     filtered_reads_ch = reads_ch
-        .join(covid_samples)
-        .filter { meta, reads, covid_file -> 
-            covid_file.text.split('\n').contains(meta.id)
+        .combine(covid_samples_ch) 
+        .filter { meta, reads, covid_samples -> 
+            covid_samples.contains(meta.id)
         }
-        .map { meta, reads, covid_file -> [meta, reads] }
-
-    // Debug: Print contents of filtered_reads_ch
-    filtered_reads_ch.view { meta, reads -> "Filtered reads: ${meta.id}, ${reads}" }
-
+        .map { meta, reads, covid_samples -> [meta, reads] }
+    
     COVID_READ_EXTRACTION(filtered_reads_ch, covid_kraken_ch)
     COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch)
     COVID_ALIGNMENT_SAMTOOLS(COVID_ALIGNMENT_BWA.out)

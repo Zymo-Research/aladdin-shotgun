@@ -9,8 +9,7 @@ process COVID_ALIGNMENT {
     container [ 
         'quay.io/biocontainers/bwa:0.7.3a--hed695b0_5',
         'quay.io/biocontainers/samtools:1.12--hd5e65b6_0'
-    ]
-    container  
+    ]  
 
     input:
     tuple val(meta), path(covid_reads)

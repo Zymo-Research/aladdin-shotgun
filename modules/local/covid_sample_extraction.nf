@@ -17,16 +17,14 @@ process COVID_SAMPLE_EXTRACTION {
 
     script:
     """
-    covidSamples=($(cat ${covid_samples_file}))
+    # Read COVID sample IDs into an array
+    mapfile -t covidSamples < "${covid_samples_file}"
 
-    samples=()
-
-    for sample_id in "${covidSamples[@]}"; do
-        if [[ "${sample_id}" == "${meta.id}" ]]; then
-            samples+=($(tuple(meta, reads)))
-        fi
-    done
-
-    emit(covid_reads_ch, samples)
+    # Check if the sample_id is in covidSamples
+    if printf '%s\n' "\${covidSamples[@]}" | grep -qx "${meta.id}"; then
+        echo "${meta.id},${reads}" > matched_sample.csv
+    else
+        touch no_match
+    fi
     """
 }

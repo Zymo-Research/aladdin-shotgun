@@ -6,7 +6,7 @@ identify the abundance of COVID variants in each sample
 process DEMIX {
     tag "$meta.id"
     label 'process_medium'
-    container 'quay.io/biocontainers/freyja:1.5.1--pyhdfd78af_0'
+    container 'quay.io/biocontainers/freyja:1.4.8--pyhdfd78af_0'
 
     input:
     tuple val(meta), path(bam)

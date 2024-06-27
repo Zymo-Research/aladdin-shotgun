@@ -6,10 +6,7 @@ and generate a sorted and indexed bam file
 process COVID_ALIGNMENT {
     tag "${meta.id}"
     label 'process_medium'
-    container [ 
-        'quay.io/biocontainers/bwa:0.7.3a--hed695b0_5',
-        'quay.io/biocontainers/samtools:1.12--hd5e65b6_0'
-    ]  
+    container 'quay.io/biocontainers/mulled-v2-48af4db78cb1b6b5f01b94358a9657ea8abe95e4:d92e8cf3f6050b6f7782a5c2e986e220ef5f6bd4'
 
     input:
     tuple val(meta), path(covid_reads)

@@ -22,9 +22,12 @@ workflow COVID_VAR_ANNOTATION{
     COVID_SAMPLE_EXTRACTION(COVID_SAMPLE_PARSE.out.covid_samples_file,reads_ch)
 
     filtered_reads_ch = COVID_SAMPLE_EXTRACTION.out.covid_reads_ch
-        .filter { meta, reads, status_file ->
-            file(status_file).text.trim() == "MATCH"
-            }
+        .filter { meta, reads, status -> 
+            status == "MATCH"
+        }
+        .map { meta, reads, status -> 
+            tuple(meta, reads)
+        }
 
     COVID_READ_EXTRACTION(filtered_reads_ch, covid_kraken_ch)
     COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch)

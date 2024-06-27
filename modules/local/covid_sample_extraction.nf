@@ -13,7 +13,7 @@ process COVID_SAMPLE_EXTRACTION {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path(reads), emit: covid_reads_ch
+    tuple val(meta), path(reads), val(status), emit: covid_reads_ch
 
     script:
     """
@@ -26,5 +26,6 @@ process COVID_SAMPLE_EXTRACTION {
     else
         echo "NO_MATCH" > status.txt
     fi
+    status=\$(cat status.txt)
     """
 }

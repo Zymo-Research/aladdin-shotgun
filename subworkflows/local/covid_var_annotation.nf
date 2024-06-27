@@ -29,6 +29,9 @@ workflow COVID_VAR_ANNOTATION{
         }
         .map { meta, reads, covid_file -> [meta, reads] }
 
+    // Debug: Print contents of filtered_reads_ch
+    filtered_reads_ch.view { meta, reads -> "Filtered reads: ${meta.id}, ${reads}" }
+
     COVID_READ_EXTRACTION(filtered_reads_ch, covid_kraken_ch)
     COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch)
     COVID_ALIGNMENT_SAMTOOLS(COVID_ALIGNMENT_BWA.out)

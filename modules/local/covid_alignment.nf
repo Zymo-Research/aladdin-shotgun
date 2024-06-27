@@ -27,7 +27,7 @@ process BWA {
 process SAMTOOLS {
     tag "${meta.id}"
     label 'process_low'
-    container 'quay.io/biocontainers/bioconductor-rsamtools:1.32.3--r351hfc679d8_0'
+    container 'quay.io/biocontainers/samtools:1.12--hd5e65b6_0'
 
     input:
     tuple val(meta), path(sam)

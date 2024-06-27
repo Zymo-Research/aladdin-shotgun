@@ -22,7 +22,7 @@ process COVID_SAMPLE_EXTRACTION {
 
     # Check if the sample_id is in covidSamples
     if printf '%s\n' "\${covidSamples[@]}" | grep -qx "${meta.id}"; then
-        echo "${meta.id},${reads}" > matched_sample.csv
+        echo "${meta.id},${reads}" >> matched_sample.csv
     else
         touch no_match
     fi

@@ -18,16 +18,16 @@ workflow COVID_VAR_ANNOTATION{
     covid_ref_ch
 
     main:
-    COVID_SAMPLE_PARSE(filtered_counts_ch,covid_threshold_ch)
-    COVID_SAMPLE_EXTRACTION(COVID_SAMPLE_PARSE.out.covid_samples_file,reads_ch)
+    COVID_SAMPLE_PARSE(filtered_counts_ch, covid_threshold_ch)
 
-    filtered_reads_ch = COVID_SAMPLE_EXTRACTION.out.covid_reads_ch
-        .filter { meta, reads, status -> 
-            status == "MATCH"
+    covid_samples = COVID_SAMPLE_PARSE.out.covid_samples_file.collectFile(name: 'all_covid_samples.txt')
+
+    filtered_reads_ch = reads_ch
+        .join(covid_samples)
+        .filter { meta, reads, covid_file -> 
+            covid_file.text.split('\n').contains(meta.id)
         }
-        .map { meta, reads, status -> 
-            tuple(meta, reads)
-        }
+        .map { meta, reads, covid_file -> [meta, reads] }
 
     COVID_READ_EXTRACTION(filtered_reads_ch, covid_kraken_ch)
     COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch)

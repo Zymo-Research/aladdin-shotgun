@@ -38,10 +38,10 @@ workflow COVID_VAR_ANNOTATION {
 
     filtered_reads_ch.view { meta, read -> "Filtered read: ${meta.id}, ${read}" }
     
-    COVID_READ_EXTRACTION(filtered_reads_ch, covid_kraken_ch)
-    COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch)
+    COVID_READ_EXTRACTION(filtered_reads_ch, covid_kraken_ch.collect())
+    COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch.collect())
     COVID_ALIGNMENT_SAMTOOLS(COVID_ALIGNMENT_BWA.out)
-    COVID_VARID_DEMIX(COVID_ALIGNMENT_SAMTOOLS.out, covid_ref_ch)
+    COVID_VARID_DEMIX(COVID_ALIGNMENT_SAMTOOLS.out, covid_ref_ch.collect())
     COVID_VARID_AGGREGATE(COVID_VARID_DEMIX.out.demixed_dir)
 
     COVID_VARID_AGGREGATE.out.map{ "${params.outdir}/freyja/" + it.getName() }

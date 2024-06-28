@@ -35,9 +35,8 @@ workflow COVID_VAR_ANNOTATION {
             covid_samples.contains(meta.id)
         }
         .map { meta, reads, covid_samples -> [meta, reads] }
-        .flatMap { meta, reads -> 
-        [tuple(meta, reads)]  // This keeps read pairs together
-        }
+
+    filtered_reads_ch.view { meta, read -> "Filtered read: ${meta.id}, ${read}" }
     
     COVID_READ_EXTRACTION(filtered_reads_ch, covid_kraken_ch)
     COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch)

@@ -4,6 +4,7 @@ to reduce computation time during read alignment
 */ 
 
 process COVID_READ_EXTRACTION {
+    cache false
     tag "$meta.id"
     label 'process_medium'
     container 'quay.io/biocontainers/kraken2:2.1.3--pl5321hdcf5f25_1'

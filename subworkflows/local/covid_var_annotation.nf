@@ -31,10 +31,10 @@ workflow COVID_VAR_ANNOTATION{
 
     filtered_reads_ch = reads_ch
         .combine(covid_samples_ch) 
-        .filter { meta, reads, covid_samples -> 
+        .filter { tuple(meta, reads), covid_samples -> 
             covid_samples.contains(meta.id)
         }
-        .map { meta, reads, covid_samples -> [meta, reads] }
+        .map { tuple(meta, reads), covid_samples -> [meta, reads] }
         .flatMap { meta, reads -> 
         [tuple(meta, reads)]  // This keeps read pairs together
 }

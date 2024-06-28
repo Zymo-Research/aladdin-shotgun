@@ -9,7 +9,7 @@ include { BWA as COVID_ALIGNMENT_BWA; SAMTOOLS as COVID_ALIGNMENT_SAMTOOLS  } fr
 include { DEMIX as COVID_VARID_DEMIX; AGGREGATE as COVID_VARID_AGGREGATE    } from '../../modules/local/covid_varID'
 
 
-workflow COVID_VAR_ANNOTATION{
+workflow COVID_VAR_ANNOTATION {
     take:
     filtered_counts_ch
     covid_threshold_ch
@@ -37,7 +37,7 @@ workflow COVID_VAR_ANNOTATION{
         .map { tuple(meta, reads), covid_samples -> [meta, reads] }
         .flatMap { meta, reads -> 
         [tuple(meta, reads)]  // This keeps read pairs together
-}
+        }
     
     COVID_READ_EXTRACTION(filtered_reads_ch, covid_kraken_ch)
     COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch)

@@ -15,7 +15,7 @@ process DEMIX {
     output:
     path("variants_files/*.variants.tsv")
     path("depth_files/*.depth")
-    path("demix_files/"), emit: demixed_dir
+    path("demix_files"), emit: demixed_dir
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"    
@@ -36,13 +36,17 @@ process AGGREGATE {
     container 'quay.io/biocontainers/freyja:1.5.1--pyhdfd78af_0'
 
     input:
-    path demix_dir
+    path demix_dirs
 
     output: 
     path("covid_variants.tsv")
 
     script:
     """
-    freyja aggregate ${demix_dir}/ --output covid_variants.tsv
+    mkdir -p merged_demix_files
+    for dir in ${demix_dirs}; do
+        cp \$dir/* merged_demix_files/
+    done
+    freyja aggregate merged_demix_files/ --output covid_variants.tsv
     """
 }

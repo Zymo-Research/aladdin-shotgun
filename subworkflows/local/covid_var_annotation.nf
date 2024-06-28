@@ -40,7 +40,8 @@ workflow COVID_VAR_ANNOTATION {
     COVID_ALIGNMENT_BWA(COVID_READ_EXTRACTION.out, covid_ref_ch.collect())
     COVID_ALIGNMENT_SAMTOOLS(COVID_ALIGNMENT_BWA.out)
     COVID_VARID_DEMIX(COVID_ALIGNMENT_SAMTOOLS.out, covid_ref_ch.collect())
-    COVID_VARID_AGGREGATE(COVID_VARID_DEMIX.out.demixed_dir)
+    demixed_dirs = COVID_VARID_DEMIX.out.demixed_dir.collect()
+    COVID_VARID_AGGREGATE(demixed_dirs)
 
     COVID_VARID_AGGREGATE.out.map{ "${params.outdir}/freyja/" + it.getName() }
 

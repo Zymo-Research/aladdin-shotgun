@@ -27,6 +27,7 @@ workflow COVID_VAR_ANNOTATION{
         .splitText()  
         .map { it.trim() }  
         .collect() 
+        .map { samples -> [samples] }
 
     filtered_reads_ch = reads_ch
         .combine(covid_samples_ch) 

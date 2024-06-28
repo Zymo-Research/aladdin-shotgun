@@ -15,7 +15,7 @@ process DEMIX {
     output:
     path("variants_files/*.variants.tsv")
     path("depth_files/*.depth")
-    path("demix_files"), emit: demixed_dir
+    path("demix_files_${meta.id}"), emit: demixed_dir
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"    
@@ -26,7 +26,7 @@ process DEMIX {
     
     freyja update
 
-    freyja demix variants_files/${prefix}.variants.tsv depth_files/${prefix}.depth --output demix_files/${prefix}.output --confirmedonly --depthcutoff 1
+    freyja demix variants_files/${prefix}.variants.tsv depth_files/${prefix}.depth --output demix_files_${meta.id}/${prefix}.output --confirmedonly --depthcutoff 1
 
     """
 }

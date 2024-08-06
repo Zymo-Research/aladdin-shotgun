@@ -294,6 +294,8 @@ workflow TAXPROFILER {
     filtered_counts_ch = DIVERSITY.out.filtered_counts
     reads_ch = INPUT_CHECK.out.fastq
     COVID_VAR_ANNOTATION( filtered_counts_ch, covid_threshold_ch, reads_ch, covid_kraken_ch, covid_ref_ch )
+    ch_multiqc_files = ch_multiqc_files.mix(COVID_VAR_ANNOTATION.out.mqc.collect().ifEmpty([]) )
+    ch_output_file_paths = ch_output_file_paths.mix(COVID_VAR_ANNOTATION.out.output_paths)
 
     /*
         SUBWORKFLOW: DIVERSITY with reference database

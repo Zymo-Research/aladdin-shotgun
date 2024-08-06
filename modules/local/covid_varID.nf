@@ -39,7 +39,8 @@ process AGGREGATE {
     path demix_dirs
 
     output: 
-    path("covid_variants.tsv")
+    path("covid_variants.tsv"), emit: aggregated_tsv
+    path("covid_variants.png"), emit: mqc_plot
 
     script:
     """
@@ -48,5 +49,6 @@ process AGGREGATE {
         cp \$dir/* merged_demix_files/
     done
     freyja aggregate merged_demix_files/ --output covid_variants.tsv
+    freyja plot covid_variants.tsv --output covid_variants.png
     """
 }

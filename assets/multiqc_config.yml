@@ -82,6 +82,10 @@ custom_data:
     section_name: "Beta Diversity"
     description: "This section displays the beta diversity of user and reference data, determined by the `Bray-Curtis` and `Jaccard` metrics. Click on the icon for each group in the legend to hide or reveal samples."
 
+  covid_variants:
+    section_name: "Covid strain analysis (freyja)",
+    description: "This plot provides a fractional abundance estimate of different covid strains for all samples."
+
 sp:
   alpha_diversity:
     fn: "alpha_diversity_mqc.html"
@@ -99,6 +103,8 @@ sp:
     fn: "class_resistomechart_mqc.json"
   top20genes_amr_composition:
     fn: "genelevel_resistomechart_mqc.json"
+  covid_variants:
+    fn: "covid_variants.png"
   diamond:
     contents: "diamond v"
     num_lines: 10

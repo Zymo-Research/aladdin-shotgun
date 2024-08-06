@@ -17,6 +17,9 @@ workflow COVID_VAR_ANNOTATION {
     covid_ref_ch
 
     main:
+    ch_multiqc_files     = Channel.empty()
+    ch_output_file_paths = Channel.empty()
+
     COVID_SAMPLE_PARSE(filtered_counts_ch, covid_threshold_ch)
 
     // Read the contents of the covid_samples file into a channel
@@ -40,6 +43,12 @@ workflow COVID_VAR_ANNOTATION {
     demixed_dirs = COVID_VARID_DEMIX.out.demixed_dir.collect()
     COVID_VARID_AGGREGATE(demixed_dirs)
 
-    COVID_VARID_AGGREGATE.out.map{ "${params.outdir}/freyja/" + it.getName() }
+    ch_multiqc_files = ch_multiqc_files.mix(COVID_VARID_AGGREGATE.out.mqc_plot) 
+    ch_output_file_paths = ch_output_file_paths.mix(
+        COVID_VARID_AGGREGATE.out.aggregated_tsv.map{ "${params.outdir}/freyja/" + it.getName() }
+        )
 
+    emit:
+    mqc          = ch_multiqc_files
+    output_paths = ch_output_file_paths
 }

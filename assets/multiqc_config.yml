@@ -83,7 +83,7 @@ custom_data:
     description: "This section displays the beta diversity of user and reference data, determined by the `Bray-Curtis` and `Jaccard` metrics. Click on the icon for each group in the legend to hide or reveal samples."
 
   covid_variants:
-    section_name: "Covid strain analysis (freyja)",
+    section_name: "Covid strain analysis (freyja)"
     description: "This plot provides a fractional abundance estimate of different covid strains for all samples."
 
 sp:

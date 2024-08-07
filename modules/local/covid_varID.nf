@@ -21,6 +21,7 @@ process DEMIX {
     def prefix = task.ext.prefix ?: "${meta.id}"    
     """
     mkdir -p variants_files depth_files demix_files_${meta.id}
+    freyja update
 
     freyja variants ${bam} --variants variants_files/${prefix}.variants.tsv --depths depth_files/${prefix}.depth --ref ${covid_ref_ch}
 

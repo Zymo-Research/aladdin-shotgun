@@ -13,7 +13,7 @@ process DEMIX {
     path(covid_ref_ch)
 
     output:
-    path("variants_files/${meta.id}")
+    path("variants_files/*.tsv")
     path("depth_files/*.depth")
     path("demix_files/*.output"), emit: demix_files
 
@@ -23,7 +23,7 @@ process DEMIX {
     mkdir -p variants_files depth_files demix_files/
     freyja update
     freyja variants ${bam} --variants variants_files/${prefix} --depths depth_files/${prefix}.depth --ref ${covid_ref_ch}
-    freyja demix variants_files/${prefix} depth_files/${prefix}.depth --output demix_files/${prefix}.output --confirmedonly --depthcutoff 1
+    freyja demix variants_files/${prefix}.tsv depth_files/${prefix}.depth --output demix_files/${prefix}.output --confirmedonly --depthcutoff 1
 
     """
 }

@@ -24,7 +24,7 @@ process DEMIX {
 
     freyja variants ${bam} --variants variants_files/${prefix}.variants.tsv --depths depth_files/${prefix}.depth --ref ${covid_ref_ch}
     
-    freyja update
+    // freyja update
 
     freyja demix variants_files/${prefix}.variants.tsv depth_files/${prefix}.depth --output demix_files_${meta.id}/${prefix}.output --confirmedonly --depthcutoff 1
 

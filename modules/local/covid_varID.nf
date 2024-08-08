@@ -36,8 +36,8 @@ process AGGREGATE {
     path demix_files
 
     output: 
-    path("covid_variants.tsv"), emit: aggregated_tsv
-    path("covid_variants.json"), emit: freyja_mqc_json
+    path("*.tsv"), emit: aggregated_tsv
+    path("*.json"), emit: freyja_mqc_json
 
     script:
     """

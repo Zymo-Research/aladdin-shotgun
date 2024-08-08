@@ -16,7 +16,7 @@ def parse_args(args=None):
     parser.add_argument("freyja_aggregated_tsv", help="Path to freyja aggregated tsv of samples")
     return parser.parse_args(args)
 
-def parse_freyja_tsv(freyja_tsv)
+def parse_freyja_tsv(freyja_tsv):
     df = pd.read_csv(freyja_tsv, sep='\t',index_col=0) 
     df = df[df['coverage']>70.0] 
 

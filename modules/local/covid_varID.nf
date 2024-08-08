@@ -37,13 +37,13 @@ process AGGREGATE {
 
     output: 
     path("covid_variants.tsv"), emit: aggregated_tsv
-    path("covid_variants.png"), emit: mqc_plot
+    path("covid_variants.json"), emit: freyja_mqc_json
 
     script:
     """
     mkdir -p demix_dir/
     mv ${demix_files} demix_dir/
     freyja aggregate demix_dir/ --output covid_variants.tsv
-    freyja plot covid_variants.tsv --output covid_variants.png
+    display_freyja_mqc.py covid_variants.tsv
     """
 }

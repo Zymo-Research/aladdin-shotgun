@@ -43,6 +43,7 @@ def mqc_freyja(freyja_df):
             }
     }
 
+    freyja_df = freyja_df.transpose()
     freyja_json = freyja_df.to_json()
     freyja_parsed = json.loads(freyja_json)
 

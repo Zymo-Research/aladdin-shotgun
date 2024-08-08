@@ -7,6 +7,7 @@ import re
 import pandas as pd
 import numpy as np
 import json
+import ast
 
 def parse_args(args=None):
     Description = "Parse freyja aggregated tsv of samples and output json file for MultiQC."

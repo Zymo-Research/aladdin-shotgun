@@ -34,8 +34,8 @@ def parse_freyja_tsv(freyja_tsv):
 def mqc_freyja(freyja_df):
     freyja_mqc = {
         "id": "covid_strain_analysis",
-        "section_name": "Covid strain analysis (freyja)",
-        "description": ("This plot provides a fractional abundance estimate of different covid strains for all samples."),
+        "section_name": "Covid Strain Analysis (freyja)",
+        "description": ("This plot provides a fractional abundance estimate of different covid strains for all covid positive samples."),
         "plot_type": "bargraph",
         "pconfig": {
             "id": "covid_strain_bargraph",

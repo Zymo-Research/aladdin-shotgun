@@ -1,5 +1,6 @@
 process MULTIQC {
     cache false
+    container 'quay.io/biocontainers/multiqc:1.23--pyhdfd78af_0'
 
     input:
     path  multiqc_files, stageAs: "?/*"

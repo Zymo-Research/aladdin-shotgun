@@ -23,7 +23,8 @@ process QIIME_DATAMERGE {
     path('versions.yml')                         , emit: versions
     path('*.qza')
     path('merged_filtered_counts.tsv')           , optional: true
-
+    path('mod_abund_table.csv')
+    
     script:
     """
     qiime feature-table merge \
@@ -54,6 +55,7 @@ process QIIME_DATAMERGE {
         biom convert -i merged_filtered_counts_out/feature-table.biom -o merged_filtered_counts.tsv --to-tsv
 
         qiime_taxmerge.py $taxonomy
+        modify_abund_table.py -i merged_filtered_counts.tsv
         qiime tools import \
             --input-path merged_taxonomy.tsv \
             --type 'FeatureData[Taxonomy]' \

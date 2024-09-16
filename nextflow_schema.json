@@ -35,8 +35,8 @@
                 "database": {
                     "type": "string",
                     "description": "Select the reference database and the tool you would like to use for taxonomic profiling. Your choice will dictate the ranking and nomenclature of the taxonomy profile. We provide several popular reference databases to choose from, but recommend the sourmash-compatible database from Zymo Research.",
-                    "enum": ["sourmash-zymo-2024", "metaphlan4-db", "sourmash-zymo-2023"],
-                    "default": "sourmash-zymo-2024"
+                    "enum": ["sourmash-zymo", "metaphlan4-db", "sourmash-gtdb-reps-rs214", "sourmash-genbank", "sourmash-gtdb"],
+                    "default": "sourmash-zymo"
                 },
                 "outdir": {
                     "type": "string",
@@ -67,6 +67,12 @@
             "description": "Common options across both long and short read preprocessing QC steps",
             "default": "",
             "properties": {
+                "phred_encode": {
+                    "type": ["integer", "string"],
+                    "default": 33,
+                    "description": "The Phred encoding system determines the sequencing of the FASTQ files.",
+		            "advanced": true
+                },
                 "preprocessing_qc_tool": {
                     "type": "string",
                     "default": "fastqc",

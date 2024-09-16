@@ -1,6 +1,6 @@
 process BBMAP_BBDUK {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
     conda "bioconda::bbmap=39.01"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -34,6 +34,7 @@ process BBMAP_BBDUK {
         threads=$task.cpus \\
         $args \\
         $contaminants_fa \\
+        qin=${params.phred_encode} \\
         &> ${prefix}.bbduk.log
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -94,7 +94,7 @@ def parse_sourmash(sourmash_results, sketch_log, name, filter_fp, host_lineage):
     if host_lineage:
         host_info = pd.read_csv(host_lineage)
         host_info = host_info[["ident","species"]]  
-        # Separate host and other matches
+        # Separate host and other matches 
         host = profile.loc[profile["accession"].isin(host_info["ident"])]
         profile = profile.loc[~profile["accession"].isin(host_info["ident"])]
         mqc_data["data"][name]["Microbes"] = round(profile["f_unique_weighted"].sum()*readcount, 2)
@@ -118,6 +118,12 @@ def parse_sourmash(sourmash_results, sketch_log, name, filter_fp, host_lineage):
         profile["Taxon"].to_csv(name+"_profile_taxonomy.txt", sep="\t")
     else:
         print("There is no identified microbial genomes after filtering out the host genomes for sample {}!".format(name))
+
+    # Relative abundance file
+    rel_profile = profile
+    rel_profile[name] = rel_profile[name]/sum(rel_profile[name])
+    # Create a table file for relative abundance
+    rel_profile[name].to_csv(name+"_relabun_parsed_profile.txt", sep="\t")
 
     # Output mqc results
     with open(name+"_sourmash_stats_mqc.json", "w") as fh:

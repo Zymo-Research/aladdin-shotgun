@@ -1,0 +1,5 @@
+Metadata-Version: 2.1
+Name: multiqc_custom_plugins
+Version: 0.0.1
+Summary: Custom MultiQC plugins for shotgun pipeline
+Requires-Dist: multiqc==1.23

@@ -1,6 +1,6 @@
 process BBMAP_BBDUK {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_dynamic_bbduk'
 
     conda "bioconda::bbmap=39.01"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -26,9 +26,9 @@ process BBMAP_BBDUK {
     def trimmed  = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.fastq.gz out2=${prefix}_2.fastq.gz"
     def contaminants_fa = contaminants ? "ref=$contaminants" : ''
     """
-    maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g')
+    maxmem=\$(echo \"$task.memory\"| cut -d ' ' -f 1 | cut -d '.' -f 1)
     bbduk.sh \\
-        -Xmx\$maxmem \\
+        -Xmx\${maxmem}g \\
         $raw \\
         $trimmed \\
         threads=$task.cpus \\

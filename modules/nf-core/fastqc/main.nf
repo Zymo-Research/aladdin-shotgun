@@ -1,9 +1,8 @@
 process FASTQC {
     tag "$meta.id"
+    label "process_dynamic_qc"
 
     maxForks 5
-    cpus 4
-    memory { meta.single_end ? (reads.size() < 4.GB ? 4.GB * task.attempt: 8.GB * task.attempt) :  16.GB }
 
     conda "bioconda::fastqc=0.12.9"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

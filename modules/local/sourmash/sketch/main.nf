@@ -1,6 +1,6 @@
 process SOURMASH_SKETCH {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_dynamic_sketch'
     container 'quay.io/biocontainers/sourmash:4.8.2--hdfd78af_0'
 
     input:

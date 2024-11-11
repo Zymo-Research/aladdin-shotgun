@@ -1,6 +1,6 @@
 process MULTIQC {
     cache false
-    container 'quay.io/biocontainers/multiqc:1.23--pyhdfd78af_0'
+    stageInMode 'copy'
 
     input:
     path  multiqc_files, stageAs: "?/*"
@@ -27,12 +27,12 @@ process MULTIQC {
     def rfilename = params.run_name ? "--filename " + params.run_name.replaceAll('\\W','_').replaceAll('_+','_') + "_multiqc_report" : ''
     def comment = warnings ? "--comment \"$warnings\"" : '' 
     """
-    cd multiqc_custom_plugins
-    python setup.py develop
-    cd ..
+    python -m venv venv_multiqc
+    source venv_multiqc/bin/activate
+    pip install -e multiqc_custom_plugins/ --no-cache-dir
 
     multiqc \\
-        --force \\
+        --force --ignore "*/venv_multiqc/*" \\
         $args \\
         $config \\
         $extra_config \\

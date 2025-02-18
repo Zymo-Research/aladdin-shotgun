@@ -256,8 +256,8 @@ workflow PROFILING {
         ch_qiime_profiles = ch_qiime_profiles.mix( METAPHLAN4_QIIMEPREP.out.mpa_biomprofile )
         ch_taxonomy = ch_taxonomy.mix( METAPHLAN4_QIIMEPREP.out.taxonomy )
 
-        METAPHLAN4_UNMAPPED ( METAPHLAN4_QIIMEPREP.out.mpa_info.collect() )
-        ch_multiqc_files = ch_multiqc_files.mix( METAPHLAN4_UNMAPPED.out.json.ifEmpty([]))
+        // METAPHLAN4_UNMAPPED ( METAPHLAN4_QIIMEPREP.out.mpa_info.collect() )
+        // ch_multiqc_files = ch_multiqc_files.mix( METAPHLAN4_UNMAPPED.out.json.ifEmpty([]))
 
     }
 

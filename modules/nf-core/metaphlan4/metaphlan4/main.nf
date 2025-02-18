@@ -2,10 +2,10 @@ process METAPHLAN4_METAPHLAN4 {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::metaphlan=4.0.6"
+    conda "bioconda::metaphlan=3.0.13"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metaphlan:4.0.6--pyhca03a8a_0' :
-        'quay.io/biocontainers/metaphlan:4.0.6--pyhca03a8a_0' }"
+        'https://depot.galaxyproject.org/singularity/metaphlan:3.0.13--pyhb7b1952_0' :
+        'quay.io/biocontainers/metaphlan:3.0.13--pyhb7b1952_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -32,7 +32,8 @@ process METAPHLAN4_METAPHLAN4 {
         $input_type \\
         $input_data \\
         $bowtie2_out \\
-        --bowtie2db $metaphlan_db \\
+        --index ${params.metaphlan_db_ver} \
+        --bowtie2db ./$metaphlan_db \\
         --output_file ${prefix}_profile.txt
 
     cat <<-END_VERSIONS > versions.yml

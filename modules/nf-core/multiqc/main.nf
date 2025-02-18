@@ -30,6 +30,10 @@ process MULTIQC {
     python -m venv venv_multiqc
     source venv_multiqc/bin/activate
     pip install -e multiqc_custom_plugins/ --no-cache-dir
+<<<<<<< HEAD
+=======
+    pip install seaborn==0.12.2
+>>>>>>> origin/squidsuite
 
     multiqc \\
         --force --ignore "*/venv_multiqc/*" \\

@@ -83,7 +83,7 @@ def parse_sourmash(sourmash_results, sketch_log, name, filter_fp, host_lineage):
 
     # Filter false positives if requested
     if filter_fp:
-        profile = profile[(profile["match_containment_ani"] >= 0.935) | (profile["unique_intersect_bp"] > 1000000)]
+        profile = profile[(profile["match_containment_ani"] >= 0.900) | (profile["unique_intersect_bp"] > 1000000)]
 
     # Calculate total no. reads of microbes and unidenfied kmers
     mqc_data["data"][name]["Microbes"] = round(profile["f_unique_weighted"].sum()*readcount, 2)

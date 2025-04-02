@@ -1,7 +1,7 @@
 process REFMERGE_TAXAMERGE {
     label 'process_low'
 
-    container "quay.io/qiime2/core:2023.2"
+    container "quay.io/qiime2/core:2023.9"
 
     input:
     path(ch_user_table), stageAs: 'user_table.qza'

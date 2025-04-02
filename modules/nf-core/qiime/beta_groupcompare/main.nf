@@ -1,7 +1,7 @@
 process QIIME_BETAGROUPCOMPARE {
     tag "${distance.baseName}"
     label 'process_low'
-    container "quay.io/qiime2/core:2023.2"
+    container "quay.io/qiime2/core:2023.9"
 
     when:
     !params.skip_betadiversity

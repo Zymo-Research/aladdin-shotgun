@@ -9,7 +9,7 @@ Export to tsv -> used metadata filtering and delivered to customer
 process QIIME_DATAMERGE {
     label 'process_low'
 
-    container 'quay.io/qiime2/core:2023.2'    
+    container 'quay.io/qiime2/core:2023.9'    
 
     input:
     path(abs_qza)

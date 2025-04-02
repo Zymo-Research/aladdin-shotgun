@@ -5,7 +5,7 @@ process QIIME_FILTER_SINGLETON_SAMPLE {
 
     label 'process_low'
 
-    container 'quay.io/qiime2/core:2023.2'
+    container 'quay.io/qiime2/core:2023.9'
 
     input:
     path(qza)

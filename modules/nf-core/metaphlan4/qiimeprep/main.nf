@@ -1,5 +1,5 @@
 process METAPHLAN4_QIIMEPREP {
-    label 'process_medium'
+    label 'process_low'
     
     conda "bioconda::biom-format=2.1.7=py27_0"
     container 'quay.io/biocontainers/biom-format:2.1.7--py27_0'

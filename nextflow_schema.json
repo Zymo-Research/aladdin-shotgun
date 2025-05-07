@@ -501,9 +501,12 @@
                         "mpa_v292_CHOCOPhlAn_201901",
                         "mpa_v293_CHOCOPhlAn_201901",
                         "mpa_v30_CHOCOPhlAn_201901",
-                        "mpa_v31_CHOCOPhlAn_201901"
+                        "mpa_v31_CHOCOPhlAn_201901",
+                        "mpa_v294_CHOCOPhlAn_201901",
+                        "mpa_v295_CHOCOPhlAn_201901",
+                        "mpa_v296_CHOCOPhlAn_201901"
                     ],
-                    "default": "mpa_v31_CHOCOPhlAn_201901",
+                    "default": "mpa_v30_CHOCOPhlAn_201901",
                     "fa_icon": "fas fa-database",
                     "help_text": "Choose the appropriate MetaPhlAn database version for your analysis. The default is the latest version."
                 },

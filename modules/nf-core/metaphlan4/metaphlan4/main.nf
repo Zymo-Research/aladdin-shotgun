@@ -9,7 +9,7 @@ process METAPHLAN4_METAPHLAN4 {
 
     input:
     tuple val(meta), path(input)
-    path metaphlan_db
+    path "metaphlan_db/*"
 
     output:
     tuple val(meta), path("*_profile.txt")   ,                emit: profile
@@ -33,7 +33,7 @@ process METAPHLAN4_METAPHLAN4 {
         $input_data \\
         $bowtie2_out \\
         --index ${params.metaphlan_db_ver} \
-        --bowtie2db ./$metaphlan_db \\
+        --bowtie2db ./metaphlan_db \\
         --output_file ${prefix}_profile.txt
 
     cat <<-END_VERSIONS > versions.yml

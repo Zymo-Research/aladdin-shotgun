@@ -1,3 +1,116 @@
+# MGscan Metagenomics: Usage
+
+## Table of Contents
+
+* [Table of contents](#table-of-contents)
+* [Introduction](#introduction)
+* [Running the pipeline](#running-the-pipeline)
+* [Updating the pipeline](#updating-the-pipeline)
+* [Reproducibility](#reproducibility)
+* [Main arguments](#main-arguments)
+    * [`-profile`](#-profile)
+    * [`--design`](#--design)
+
+## Introduction
+
+Nextflow handles job submissions on SLURM or other environments, and supervises running the jobs. Thus the Nextflow process must run until the pipeline is finished. We recommend that you put the process running in the background through `screen` / `tmux` or similar tool. Alternatively you can run nextflow within a cluster job submitted your job scheduler.
+
+It is recommended to limit the Nextflow Java virtual machines memory. We recommend adding the following line to your environment (typically in `~/.bashrc` or `~./bash_profile`):
+
+```bash
+NXF_OPTS='-Xms1g -Xmx4g'
+```
+
+## Running the pipeline
+The typical command for running the full MGscan Metagenomics pipeline on awsbatch is as follows:
+
+```bash
+nextflow run Zymo-Research/aladdin-shotgun \
+    -profile awsbatch \
+    --design "<path to design CSV file>" \
+    --database sourmash-zymo-2024 \
+    --run_amr true \
+    -work-dir "<work dir on S3>" \
+    --awsregion "<AWS Batch region> \
+    --awsqueue "<SQS ARN>" \
+    --outdir "<output dir on S3>" \
+    -r "0.0.14" \
+    -name "<report title>"
+```
+
+### Updating the pipeline
+When you run the above command, Nextflow automatically pulls the pipeline code from GitHub and stores it as a cached version. When running the pipeline after this, it will always use the cached version if available - even if the pipeline has been updated since. To make sure that you're running the latest version of the pipeline, make sure that you regularly update the cached version of the pipeline:
+
+```bash
+nextflow pull Zymo-Research/aladdin-shotgun
+```
+
+### Reproducibility
+It's a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
+
+First, go to the [Zymo-Research/aladdin-shotgun releases page](https://github.com/Zymo-Research/aladdin-shotgun/releases) and find the latest version number - numeric only (eg. `0.0.14`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 0.0.14`.
+
+This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future.
+
+## Main arguments
+
+### `-profile`
+Use this parameter to choose a configuration profile. Profiles can give configuration presets for different compute environments. While there are multiple profiles listed below, this pipeline has only been tested with `docker`, `slurm`, and `awsbatch`.
+
+* `awsbatch`
+  * A generic configuration profile to be used with AWS Batch.
+* `conda`
+  * A generic configuration profile to be used with [conda](https://conda.io/docs/)
+  * Pulls most software from [Bioconda](https://bioconda.github.io/)
+* `docker`
+  * A generic configuration profile to be used with [Docker](http://docker.com/)
+  * Pulls software from dockerhub
+* `singularity`
+  * A generic configuration profile to be used with [Singularity](http://singularity.lbl.gov/)
+  * Pulls software from DockerHub
+* `slurm`
+  * A generic configuration profile to be used with slurm clusters. When the slurm profile is used, `apptainer`, which pulls software from Dockerhub, is enabled.
+* `test`
+  * A profile with a complete configuration for automated testing
+  * Includes links to test data so needs no other parameters
+
+When using `awsbatch` profile, one must supply [other options related to AWS batch](#aws-batch-specific-parameters), and supply the locations of [work directory](#-work-dir) and [output directory](#--outdir) on AWS S3.
+
+### `--design`
+You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row as shown in the examples in the subsections below.
+
+```bash
+--design 'path/to/data/sample_sheet.csv'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####################################################################### TAXPROFILER USAGE.MD #############################################################################################################
 # nf-core/taxprofiler: Usage
 
 ## :warning: Please read this documentation on the nf-core website: [https://nf-co.re/taxprofiler/usage](https://nf-co.re/taxprofiler/usage)

@@ -1,32 +1,46 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python3
 import argparse
 import pandas as pd
 
-def metaphlan_profileparse( mpa_profiletable, label ):
-    
-    #Retrieve number of unknown reads
-    #Process Metaphlan4 input table
-    #For relative abundance: remove all entries that are not on species level
-    profile = pd.read_csv(mpa_profiletable, sep="\t")
-    profile = profile[["clade_name", "estimated_number_of_reads_from_the_clade"]]
+def metaphlan_profileparse(mpa_table, label):
+    # 1) Load the full MetaphlAn table
+    df = pd.read_csv(
+        mpa_table, sep='\t', 
+        usecols=['clade_name','clade_taxid','estimated_number_of_reads_from_the_clade']
+    )
+    df.columns = ['clade_name','clade_taxid','reads']
 
-    #Clean all entries that are not on the sample level
-    profile.columns = ["clade_name",label]
-    profile = profile[profile["clade_name"].str.contains("s__") == True]
-    profile = profile[profile["clade_name"].str.contains("t__") == False]
-    profile.to_csv(label+"_absabun_parsed_mpaprofile.txt", sep="\t", index=False)
+    # 2) Keep only species-level entries
+    is_species = df['clade_name'].str.contains(r'\|s__')
+    df = df[is_species].copy()
 
-    #Formatting supplemental taxonomy table needed by qiime2
-    #Column names MUST be "Feature ID", "Taxon"
-    taxonomy = pd.DataFrame(profile["clade_name"].str.replace("|", ";", regex=False))
-    taxonomy = pd.concat((profile["clade_name"], taxonomy), axis=1)
-    taxonomy.columns = ["Feature ID", "Taxon"]
-    taxonomy.to_csv(label+"_profile_taxonomy.txt", sep="\t", index=False)
+    # 3) Decide what your "Feature ID" should be:
+    #    Option A: entire lineage of taxids, e.g. "2|976|...|816"
+    #    Option B: just the final taxid (after last '|')
+    # Here we take Option B:
+    df['Feature ID'] = df['clade_taxid'].str.split('|').str[-1]
+
+    # 4) Write the abundance table
+    out_abun = df[['Feature ID','reads']].copy()
+    out_abun.columns = ['Feature ID', label]
+    out_abun.to_csv(f"{label}_absabun_parsed_mpaprofile.txt",
+                    sep='\t', index=False)
+
+    # 5) Build the taxonomy file for QIIME2
+    #    replace '|' → ';' in the clade_name, to match Qiime2 TSVTaxonomyFormat
+    tax = df[['Feature ID','clade_name']].copy()
+    tax['Taxon'] = tax['clade_name'].str.replace(r'\|', ';', regex=True)
+    tax = tax[['Feature ID','Taxon']]
+    tax.to_csv(f"{label}_profile_taxonomy.txt",
+               sep='\t', index=False)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="""Parse metaphlan table""")
-    parser.add_argument("-t", "--mpa_table", dest="mpa_profiletable", type=str, help="metaphlan assigned reads")
-    parser.add_argument("-l", "--label", dest="label", type=str, help="sample label")
-    args = parser.parse_args()
-    metaphlan_profileparse(args.mpa_profiletable, args.label)
+    p = argparse.ArgumentParser(
+        description="Parse MetaPhlAn table into feature-counts + taxonomy"
+    )
+    p.add_argument('-t','--mpa_table', required=True,
+                   help="MetaPhlAn output (.txt)")
+    p.add_argument('-l','--label',     required=True,
+                   help="Sample label prefix")
+    args = p.parse_args()
+    metaphlan_profileparse(args.mpa_table, args.label)

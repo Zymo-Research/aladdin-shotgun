@@ -24,6 +24,8 @@ NXF_OPTS='-Xms1g -Xmx4g'
 ## Running the pipeline
 The typical command for running the full MGscan Metagenomics pipeline on awsbatch is as follows:
 
+### Using AWS Batch
+
 ```bash
 nextflow run Zymo-Research/aladdin-shotgun \
     -profile awsbatch \
@@ -34,6 +36,34 @@ nextflow run Zymo-Research/aladdin-shotgun \
     --awsregion "<AWS Batch region> \
     --awsqueue "<SQS ARN>" \
     --outdir "<output dir on S3>" \
+    -r "0.0.14" \
+    -name "<report title>"
+```
+
+### Using Docker locally
+
+```bash
+nextflow run Zymo-Research/aladdin-shotgun \
+    -profile docker \
+    --design "<path to design CSV file>" \
+    --database sourmash-zymo-2024 \
+    --run_amr true \
+    --outdir "<output dir on S3>" \
+    -r "0.0.14" \
+    -name "<report title>"
+```
+
+### Using SLURM on ZymoCloud
+
+```bash
+nextflow run Zymo-Research/aladdin-shotgun \
+    -profile slurm \
+    --design "<path to design CSV file>" \
+    --database sourmash-zymo-2024 \
+    --run_amr true \
+    -work-dir "<work dir on ZymoCloud>" \
+    --partition "<partition name on ZymoCloud>" \
+    --outdir "<output dir on ZymoCloud>" \
     -r "0.0.14" \
     -name "<report title>"
 ```
@@ -83,11 +113,14 @@ You will need to create a design file with information about the samples in your
 --design 'path/to/data/sample_sheet.csv'
 ```
 
+### `--database`
+Select the tool you would like to use for taxonomic profiling and its corresponding reference database. Your choice will dictate the ranking and nomenclature of the taxonomy profile. We provide several popular reference databases to choose from, but recommend the sourmash-compatible database from Zymo Research.
 
+Options:
 
-
-
-
+    --database sourmash-zymo-2024
+    --database metaphlan4-db
+    --database sourmash-zymo-2023
 
 
 

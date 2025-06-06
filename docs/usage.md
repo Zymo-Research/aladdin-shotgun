@@ -44,12 +44,10 @@ nextflow run Zymo-Research/aladdin-shotgun \
 
 ```bash
 nextflow run Zymo-Research/aladdin-shotgun \
-    -profile docker \
+    -profile docker,dev \
     --design "<path to design CSV file>" \
     --database sourmash-zymo-2024 \
-    --run_amr true \
-    --outdir "<output dir on S3>" \
-    -r "0.0.14" \
+    --run_amr true
     -name "<report title>"
 ```
 
@@ -113,14 +111,52 @@ You will need to create a design file with information about the samples in your
 --design 'path/to/data/sample_sheet.csv'
 ```
 
+#### Full analysis
+The parameter `--design` is required. It must be a CSV file with the following format.
+```
+sample,read_1,read_2,group,run_accession
+sample1,s1_run1_R1.fastq.gz,s1_run1_R2.fastq.gz,groupA,run1
+sample1,s1_run2_R1.fastq.gz,s1_run2_R2.fastq.gz,groupA,run2
+sample2,s2_run1_R1.fastq.gz,,groupB,,
+sample3,s3_run1_R1.fastq.gz,s3_run1_R2.fastq.gz,groupB,,
+```
+   - The header line must be present. 
+   - The columns "sample", "read_1", "read_2", "group" must be present. Column "run_accession" is optional.
+   - The column "sample" contains the name/label for each sample. It can be duplicate. When duplicated, it means the same sample has multiple sequencing runs. In those cases, a different value for "run_accession" is expected. See "sample1" in above example. Sample names must contain only alphanumerical characters or underscores, and must start with a letter.
+   - The columns "read_1", "read_2" refers to the paths, including S3 paths, of Read 1 and 2 of Illumina paired-end data. They must be ".fastq.gz" or ".fq.gz" files. When your data are single-end Illumina or PacBio data, simply use "read_1" column, and leave "read_2" column empty. FASTA files from Nanopore data are currently not supported.
+   - The column "group" contains the group name/label for comparison purposes in the diversity analysis. If you don't have/need this information, simply leave the column empty, but this column must be present regardless. Same rules for legal characters of sample names apply here too. 
+   - The column "run_accesssion" is optional. It is only required when there are duplicates in the "sample" column. This is to mark different run names for the sample. 
+
+## Reference databases
+This pipeline includes software tools and pre-prepared reference databases used to assign taxonomy to your metagenomic reads. Supported databases are specified with the argument `--database`, included below.
+
 ### `--database`
 Select the tool you would like to use for taxonomic profiling and its corresponding reference database. Your choice will dictate the ranking and nomenclature of the taxonomy profile. We provide several popular reference databases to choose from, but recommend the sourmash-compatible database from Zymo Research.
 
-Options:
+Sourmash prepared GenBank and GTDB databases are available on the sourmash [site](https://sourmash.readthedocs.io/en/latest/databases.html).
 
-    --database sourmash-zymo-2024
-    --database metaphlan4-db
-    --database sourmash-zymo-2023
+Instructions for downloading the MetaPhlAn databases are available on the MetaPhlAn [site](https://github.com/biobakery/MetaPhlAn/wiki/MetaPhlAn-4#pre-requisites).
+
+* Zymo Jun 2024 Custom Database (`--database sourmash-zymo-2024`)
+   * GenBank March 2022 Fungi
+   * GenBank March 2022 Protozoa
+   * GenBank March 2022 Viral
+   * GTDB rs214 DNA database
+   * Zymo Custom Host Genomes
+   * Zymo Custom Genomes
+
+* Zymo Jul 2023 Custom Database (`--database sourmash-zymo-2023`)
+   * GenBank March 2022 Fungi
+   * GenBank March 2022 Protozoa
+   * GenBank March 2022 Viral
+   * GTDB rs207 DNA database
+   * Zymo Custom Host Genomes
+   * Zymo Custom Genomes
+
+* Metaphlan4.0 Database (`--metaphlan4-db`)
+   * Metaphlan mpa_vOct22_CHOCOPhlAnSGB_202212 database
+  
+This pipeline has currently been tested with [sourmash](https://sourmash.readthedocs.io/en/latest/) and [MetaPhlAn4](https://huttenhower.sph.harvard.edu/metaphlan/).
 
 
 

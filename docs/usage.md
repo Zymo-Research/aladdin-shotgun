@@ -158,9 +158,237 @@ Instructions for downloading the MetaPhlAn databases are available on the MetaPh
   
 This pipeline has currently been tested with [sourmash](https://sourmash.readthedocs.io/en/latest/) and [MetaPhlAn4](https://huttenhower.sph.harvard.edu/metaphlan/).
 
+## Trimming and filtering
 
+### `--preprocessing_qc_tool 
+Specify the tool used for quality control of raw sequencing reads to be FastQC or falco. Falco is designed as a drop-in replacement for FastQC but written in C++ for faster computation. We particularly recommend using falco when using long reads (due to reduced memory constraints), however it is also applicable for short reads.
 
+### `--save_preprocessed_reads`
+This saves the FASTQ output from the following tools:
 
+- fastp
+- AdapterRemoval
+- Porechop
+- Filtlong
+
+Depending on the parameters you set, these reads will be a mixture of: adapter clipped, quality trimmed, pair-merged, and length filtered.
+
+### `--shortread_qc_tool`
+Specify which tool to use for short-read quality control. This will remove adapters, trim low quality bases, remove reads that are too short, etc. Choose 'DO_NOT_RUN' if you don't want this step performed. Default: fastp
+
+### `--shortread_qc_skipadaptertrim`
+Skip the removal of sequencing adapters. \n\nThis often can be useful to speed up run-time of the pipeline when analysing data downloaded from public databases such as the ENA or SRA, as adapters should already be removed (however we recommend to check FastQC results to ensure this is the case).
+
+### `--shortread_qc_adapter1`
+"Specify a custom forward or R1 adapter sequence to be removed from reads. \n\nIf not set, the selected short-read QC tool's defaults will be used.\n\n> Modifies tool parameter(s):\n> - fastp: `--adapter_sequence`. fastp default: `AGATCGGAAGAGCACACGTCTGAACTCCAGTCA`\n> - AdapterRemoval: `--adapter1`. AdapteRemoval2 default: `AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG`
+
+### `--shortread_qc_adapter2`
+p_text": "Specify a custom reverse or R2 adapter sequence to be removed from reads. \n\nIf not set, the selected short-read QC tool's defaults will be used.\n\n> Modifies tool parameter(s):\n> - fastp: `--adapter_sequence`. fastp default: `AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT`\n> - AdapterRemoval: `--adapter1`. AdapteRemoval2 default: `AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT`
+
+### `--shortread_qc_adapterlist`
+                    "help_text": "Allows to supply a file with a list of adapter (combinations) to remove from all files. \n\nOverrides the --shortread_qc_adapter1/--shortread_qc_adapter2 parameters . \n\nFor AdapterRemoval this consists of a two column table with a `.txt` extension: first column represents forward strand, second column for reverse strand. You must supply all possible combinations, one per line, and this list is applied to all files. See AdapterRemoval documentation for more information.\n\nFor fastp this consists of a standard FASTA format with a `.fasta`/`.fa`/`.fna`/`.fas` extension. The adapter sequence in this file should be at least 6bp long, otherwise it will be skipped. fastp trims the adapters present in the FASTA file one by one.\n\n> Modifies AdapterRemoval parameter: --adapter-list\n> Modifies fastp parameter: --adapter_fasta",
+
+### --shortread_qc_mergepairs
+                    "help_text": "Turn on the merging of read-pairs of paired-end short read sequencing data. \n\n> Modifies tool parameter(s):\n> - AdapterRemoval: `--collapse`\n> - fastp: `-m --merged_out`\n",
+
+### --shortread_qc_includeunmerged
+                    "help_text": "Turns on the inclusion of unmerged reads in resulting FASTQ file from merging paired-end sequencing data when using `fastp` and/or `AdapterRemoval`. For `fastp` this means the unmerged read pairs are directly included in the output FASTQ file. For `AdapterRemoval`, additional output files containing unmerged reads are all concatenated into one file by the workflow.\n\nExcluding unmerged reads can be useful in cases where you prefer to have very short reads (e.g. aDNA), thus excluding longer-reads or possibly faulty reads where one of the pair was discarded.\n\n> Adds `fastp` option: `--include_unmerged`\n",
+
+### --shortread_qc_minlength
+                    "help_text": "Specifying a mimum read length filtering can speed up profiling by reducing the number of short unspecific reads that need to be match/aligned to the database.\n\n> Modifies tool parameter(s):\n> - removed from reads `--length_required`\n> - AdapterRemoval: `--minlength`",
+
+### --shortread_complexityfilter_tool
+                    "description": "Specify which tool to use for complexity filtering. This will remove low complexity or highly repetitive sequences that are often not informative. Choose 'DO_NOT_RUN' if you don't want this step performed. Default: bbduk",
+
+### --shortread_complexityfilter_entropy
+
+### --shortead_complexityfilter_bbduk_windowsize
+
+### --shortread_complexityfilter_bbduk_mask
+
+### --shortread_complexityfilter_fastp_threshold
+
+### --shortread_complexityfilter_prinseqplusplus_mode
+
+### --shortread_complexityfilter_prinseqplusplus_dustscore
+
+### --save_complexityfiltered_reads
+
+## Preprocessing Long Read QC Options
+
+### --perform_longread_qc
+
+### --longread_qc_skipadaptertrim
+
+### --longread_qc_skipqualityfilter
+
+### --longread_qc_qualityfilter_minlength
+
+### --longread_qc_qualityfilter_keeppercent
+
+### --longread_qc_qualityfilter_targetbases
+
+## Preprocessing Host Removal Options
+
+### --perform_shortread_hostremoval
+
+### --perform_longread_hostremoval
+
+### --hostremoval_reference
+
+### --shortread_hostremoval_index
+
+### --longread_hostremoval_index
+
+### --save_hostremoval_index
+
+### --save_hostremoval_bam
+
+### --save_hostremoval_unmapped
+
+## Preprocessing Run Merging Options
+
+### --perform_runmerging
+
+### --save_runmerged_reads
+
+## Profiling Options
+
+### --centrifuge_save_reads
+
+### --diamond_output_format
+
+### --diamond_save_reads
+
+### --kaiju_taxon_rank
+
+### --kraken2_save_reads
+
+### --kraken2_save_readclassification
+
+### ---kraken2_save_minimizers
+
+### --krakenuniq_save_reads
+
+### --krakenuniq_ram_chunk_size
+
+### --krakenuniq_save_readclassification
+
+### --malt_mode
+
+### --malt_save_reads
+
+### --malt_generate_megansummary
+
+### --sourmash_kmersize
+
+### --sourmash_threshold_bp
+
+### --sourmash_strict_filtering
+
+### --motus_use_relative_abundance
+
+### --motus_save_mgc_read_counts
+
+### --motus_remove_ncbi_ids
+
+## Postprocessing and visualization options
+
+### --lowread_filter
+
+### --min_frequency
+
+### --min_samples
+
+### --taxonomy_collapse_level
+
+### --skip_heatmap
+
+### --skip_alpha_rarefaction
+
+### --top_taxa
+
+### --group_of_interests
+
+### --skip_alphadiversity
+
+### --skip_individalpha
+
+### --skip_betadiversity
+
+### --run_profile_standardisation
+
+### --standaridisation_motus_generation
+
+### --run_krona
+
+### --krona_taxonomy_directory
+
+### --standardisation_taxpasta_format
+
+### --taxpasta_taxonomy_dir 
+
+### --taxpasta_add_name
+
+### --taxpasta_add_rank
+
+### --taxpasta_add_lineage
+
+### --taxpasta_add_idlineage
+
+## Max job request options
+
+### --max_cpus
+
+### --max_memory
+
+### --max_time
+
+## Generic options
+
+### --help
+
+### --version
+
+### --publish_dir_mode
+
+### --email_on_fail
+
+### --plaintext_email
+
+### --max_multiqc_email_size
+
+### --monochrome_logs
+
+### --hook_url
+
+### --multiqc_config
+
+### --multiqc_logo
+
+### --multiqc_methods_description
+
+### --tracedir
+
+### --validate_params
+
+### --show_hidden_params
+
+### --ignore_failed_samples
+
+### --genome
+
+### --igenomes_base
+
+### --igenomes_ignore
+
+## AMR Options
+
+### --run_amr
+
+### --resistome_threshold
+
+### --amr_index_files
 
 
 

@@ -160,7 +160,7 @@ This pipeline has currently been tested with [sourmash](https://sourmash.readthe
 
 ## Trimming and filtering
 
-### `--preprocessing_qc_tool 
+### `--preprocessing_qc_tool` 
 Specify the tool used for quality control of raw sequencing reads to be FastQC or falco. Falco is designed as a drop-in replacement for FastQC but written in C++ for faster computation. We particularly recommend using falco when using long reads (due to reduced memory constraints), however it is also applicable for short reads.
 
 ### `--save_preprocessed_reads`
@@ -180,77 +180,192 @@ Specify which tool to use for short-read quality control. This will remove adapt
 Skip the removal of sequencing adapters. \n\nThis often can be useful to speed up run-time of the pipeline when analysing data downloaded from public databases such as the ENA or SRA, as adapters should already be removed (however we recommend to check FastQC results to ensure this is the case).
 
 ### `--shortread_qc_adapter1`
-"Specify a custom forward or R1 adapter sequence to be removed from reads. \n\nIf not set, the selected short-read QC tool's defaults will be used.\n\n> Modifies tool parameter(s):\n> - fastp: `--adapter_sequence`. fastp default: `AGATCGGAAGAGCACACGTCTGAACTCCAGTCA`\n> - AdapterRemoval: `--adapter1`. AdapteRemoval2 default: `AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG`
+Specify a custom forward or R1 adapter sequence to be removed from reads.
+
+If not set, the selected short-read QC tool's defaults will be used.
+
+> Modifies tool parameter(s):
+> - fastp: `--adapter_sequence`. fastp default: `AGATCGGAAGAGCACACGTCTGAACTCCAGTCA`
+> - AdapterRemoval: `--adapter1`. AdapteRemoval2 default: `AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG`
 
 ### `--shortread_qc_adapter2`
-p_text": "Specify a custom reverse or R2 adapter sequence to be removed from reads. \n\nIf not set, the selected short-read QC tool's defaults will be used.\n\n> Modifies tool parameter(s):\n> - fastp: `--adapter_sequence`. fastp default: `AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT`\n> - AdapterRemoval: `--adapter1`. AdapteRemoval2 default: `AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT`
+Specify a custom reverse or R2 adapter sequence to be removed from reads.
 
-### `--shortread_qc_adapterlist`
-                    "help_text": "Allows to supply a file with a list of adapter (combinations) to remove from all files. \n\nOverrides the --shortread_qc_adapter1/--shortread_qc_adapter2 parameters . \n\nFor AdapterRemoval this consists of a two column table with a `.txt` extension: first column represents forward strand, second column for reverse strand. You must supply all possible combinations, one per line, and this list is applied to all files. See AdapterRemoval documentation for more information.\n\nFor fastp this consists of a standard FASTA format with a `.fasta`/`.fa`/`.fna`/`.fas` extension. The adapter sequence in this file should be at least 6bp long, otherwise it will be skipped. fastp trims the adapters present in the FASTA file one by one.\n\n> Modifies AdapterRemoval parameter: --adapter-list\n> Modifies fastp parameter: --adapter_fasta",
+If not set, the selected short-read QC tool's defaults will be used.
+
+> Modifies tool parameter(s):
+> - fastp: `--adapter_sequence`. fastp default: `AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT`
+> - AdapterRemoval: `--adapter1`. AdapteRemoval2 default: `AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT`
+
+### `--shortread_qc_adapterlist
+Allows to supply a file with a list of adapter (combinations) to remove from all files. 
+
+Overrides the --shortread_qc_adapter1/--shortread_qc_adapter2 parameters .
+
+For AdapterRemoval this consists of a two column table with a `.txt` extension: first column represents forward strand, second column for reverse strand. You must supply all possible combinations, one per line, and this list is applied to all files. See AdapterRemoval documentation for more information.
+
+For fastp this consists of a standard FASTA format with a `.fasta`/`.fa`/`.fna`/`.fas` extension. The adapter sequence in this file should be at least 6bp long, otherwise it will be skipped. fastp trims the adapters present in the FASTA file one by one.
+
+> Modifies AdapterRemoval parameter: --adapter-list
+> Modifies fastp parameter: --adapter_fasta
 
 ### `--shortread_qc_mergepairs`
-                    "help_text": "Turn on the merging of read-pairs of paired-end short read sequencing data. \n\n> Modifies tool parameter(s):\n> - AdapterRemoval: `--collapse`\n> - fastp: `-m --merged_out`\n",
+Turn on the merging of read-pairs of paired-end short read sequencing data. 
+> Modifies tool parameter(s):
+> - AdapterRemoval: `--collapse`
+> - fastp: `-m --merged_out`
 
 ### `--shortread_qc_includeunmerged`
-                    "help_text": "Turns on the inclusion of unmerged reads in resulting FASTQ file from merging paired-end sequencing data when using `fastp` and/or `AdapterRemoval`. For `fastp` this means the unmerged read pairs are directly included in the output FASTQ file. For `AdapterRemoval`, additional output files containing unmerged reads are all concatenated into one file by the workflow.\n\nExcluding unmerged reads can be useful in cases where you prefer to have very short reads (e.g. aDNA), thus excluding longer-reads or possibly faulty reads where one of the pair was discarded.\n\n> Adds `fastp` option: `--include_unmerged`\n",
+Turns on the inclusion of unmerged reads in resulting FASTQ file from merging paired-end sequencing data when using `fastp` and/or `AdapterRemoval`. For `fastp` this means the unmerged read pairs are directly included in the output FASTQ file. For `AdapterRemoval`, additional output files containing unmerged reads are all concatenated into one file by the workflow.
+
+Excluding unmerged reads can be useful in cases where you prefer to have very short reads (e.g. aDNA), thus excluding longer-reads or possibly faulty reads where one of the pair was discarded.
+
+> Adds `fastp` option: `--include_unmerged`
 
 ### `--shortread_qc_minlength`
-                    "help_text": "Specifying a mimum read length filtering can speed up profiling by reducing the number of short unspecific reads that need to be match/aligned to the database.\n\n> Modifies tool parameter(s):\n> - removed from reads `--length_required`\n> - AdapterRemoval: `--minlength`",
+Specifying a mimum read length filtering can speed up profiling by reducing the number of short unspecific reads that need to be match/aligned to the database.
+
+> Modifies tool parameter(s):
+> - removed from reads `--length_required`
+> - AdapterRemoval: `--minlength`
 
 ### `--shortread_complexityfilter_tool`
-                    "description": "Specify which tool to use for complexity filtering. This will remove low complexity or highly repetitive sequences that are often not informative. Choose 'DO_NOT_RUN' if you don't want this step performed. Default: bbduk",
+Specify which tool to use for complexity filtering. This will remove low complexity or highly repetitive sequences that are often not informative. Choose 'DO_NOT_RUN' if you don't want this step performed. Default: bbduk
 
 ### `--shortread_complexityfilter_entropy`
+Specify the minimum 'entropy' value for complexity filtering for BBDuk or PRINSEQ++.
 
+Note that this value will only be used for PRINSEQ++ if `--shortread_complexityfilter_prinseqplusplus_mode` is set to `entropy`.
+
+Entropy here corresponds to the amount of sequence variation exists within the read. Higher values correspond to more variety, and thus will likely reslut in more specific matching to a taxon's reference genome. The trade off here is fewer reads (or abundance information) available for having a confident identification.
+
+
+> Modifies tool parameter(s):
+> - BBDuk: `entropy=`
+> - PRINSEQ++:  `-lc_entropy`
+                    
 ### `--shortead_complexityfilter_bbduk_windowsize`
+Specify the window size to calculate the level entropy within for BBDuk.
+
+> Modifies tool parameter(s):
+> - BBDuk: `entropywindow=`
 
 ### `--shortread_complexityfilter_bbduk_mask`
+Turn on masking of low-complexity reads (i.e., replacement with `N`) rather than removal.
+
+> Modifies tool parameter(s)
+> - BBDuk: `entropymask=`
 
 ### `--shortread_complexityfilter_fastp_threshold`
+Specify the minimum sequence complexity value for fastp. This value corresponds to the percentage of bases that is different from it's adjacent bases.
+
+> Modifies tool parameter(s):
+> - removed from reads `--complexity_threshold`
 
 ### `--shortread_complexityfilter_prinseqplusplus_mode`
+Specify the complexity filter mode for PRINSEQ++
 
 ### `--shortread_complexityfilter_prinseqplusplus_dustscore`
+Specify the minimum dust score below which low-complexity reads will be removed. A DUST score is based on how often different tri-nucleotides occur along a read.
+
+> Modifies tool parameter(s):
+> - PRINSEQ++: `--lc_dust`
 
 ### `--save_complexityfiltered_reads`
+Specify whether to save the final complexity filtered reads in your results directory (`--outdir`).
 
 ## Preprocessing Long Read QC Options
 
 ### `--perform_longread_qc`
+Turns on long read quality control steps (adapter clipping, length and/or quality filtering.)
+
+Removing adapters (if present) is recommend to reduce false-postive hits that may occur from 'dirty' or 'contaminated' reference genomes in a profiling database that contain accidentially incorporated adapter sequences.
+
+Length filtering, and quality filtering can speed up alignment by reducing the number of unspecific reads that need to be aligned.
+
 
 ### `--longread_qc_skipadaptertrim`
+Skip removal of adapters by Porechop. This can be useful in some cases to speed up run time - particularly when you are running data downloading from public databases such as the ENA/SRA that should already have adapters removed. We recommend that you check your FastQC results this is indeed the case.
 
 ### `--longread_qc_skipqualityfilter`
+Skip removal of quality filtering with Filtlong. This will skip length, percent reads, and target bases filtering (see other `--longread_qc_qualityfilter_*` parameters).
 
 ### `--longread_qc_qualityfilter_minlength`
+Specify the minimum of length of reads to be kept for downstream analysis.
+
+> Modifies tool parameter(s):
+> - Filtlong: `--min_length`
 
 ### `--longread_qc_qualityfilter_keeppercent`
+Throw out the remaining percentage of reads outside the value. This is measured by bp, not by read count. So this option throws out the worst e.g. 10% of read bases if the parameter is set to `90`.  _Modified from [Filtlong documentation](https://github.com/rrwick/Filtlong)_
+
+> Modifies tool parameter(s):
+> - Filtlong: `--keep_percent`
 
 ### `--longread_qc_qualityfilter_targetbases`
+Removes the worst reads until only the specified value of bases remain, useful for very large read sets. If the input read set is less than the specified value, this setting will have no effect. _Modified from [Filtlong documentation](https://github.com/rrwick/Filtlong)_
+> Modifies tool parameter(s):
+> - Filtlong: `--keep_percent`
 
 ## Preprocessing Host Removal Options
 
 ### `--perform_shortread_hostremoval`
+Turns on the ability to remove short-reads from the that derived from a known organism, using Bowtie2 and samtools.
+
+This subworkflow is useful to remove reads that may come from a host, or a known contamination like the human reference genome. Human DNA contamination of (microbial) reference genomes is well known, so removal of these prior profiling both reduces the risks of false positives, and in _some cases_ a faster runtime (as less reads need to be profiled).
+
+Alternatively, you can include the reference genome within your profiling databases and can turn off this subworkflow, with the trade off of a larger taxonomic profiling database.
 
 ### `--perform_longread_hostremoval`
+Turns on the ability to remove long-reads from the that derived from a known organism, using minimap2 and samtools
+
+This subworkflow is useful to remove reads that may come from a host, or a known contamination like the human reference genome. Human DNA contamination of (microbial) reference genomes is well known, so removal of these prior profiling both reduces the risks of false positives, and in _some cases_ a faster runtime (as less reads need to be profiled).
+
+Alternatively, you can include the reference genome within your profiling databases and can turn off this subworkflow, with the trade off of a larger taxonomic profiling database.
 
 ### `--hostremoval_reference`
+Specify a path to the FASTA file (optionally gzipped) of the reference genome of the organism to be removed.\n\nIf you have two or more host organisms or contaminants you wish to remove, you can concatenate the FASTAs of the different taxa into a single one to provide to the pipeline.
+
 
 ### `--shortread_hostremoval_index`
+Specify the path to a _directory_ containing pre-made Bowtie2 reference index files (i.e. the directory containing `.bt1`, `.bt2` files etc.). These should sit in the same directory alongside the the reference file specified in `--hostremoval_reference`.
+
+Specifying premade indices can speed up runtime of the host-removal step, however if not supplied the pipeline will generate the indices for you.
 
 ### `--longread_hostremoval_index`
+Specify path to a pre-made Minimap2 index file (.mmi) of the host removal reference file given to `--hostremoval_reference`.
+
+Specifying a premade index file can speed up runtime of the host-removal step, however if not supplied the pipeline will generate the indices for you.
+
 
 ### `--save_hostremoval_index`
+Save the output files of the in-built indexing of the host genome.
+
+This is recommend to be turned on if you plan to use the same reference genome multiple times, as supplying the directory or file to `--shortread_hostremoval_index` or `--longread_hostremoval_index` respectively can speed up runtime of future runs. Once generated, we recommend you place this file _outside_ of your run results directory in a central 'cache' directory you and others using your machine can access and supply to the pipeline.
 
 ### `--save_hostremoval_bam`
+Save the reads mapped to the reference genome and off-target reads in BAM format as output by the respective hostremoval alignment tool.
+
+This can be useful if you wish to perform other analyses on the host organism (such as host-microbe interaction), however, you should consider whether the default mapping parameters of Bowtie2 (short-read) or minimap2 (long-read) are optimised to your context.
 
 ### `--save_hostremoval_unmapped`
+Save only the reads NOT mapped to the reference genome in FASTQ format (as exported from `samtools view` and `bam2fq`).
+
+This can be useful if you wish to perform other analyses on the off-target reads from the host mapping, such as manual profiling or _de novo_ assembly.
 
 ## Preprocessing Run Merging Options
 
 ### `--perform_runmerging`
+Turns on the concatenation of sequencing runs or libraries with the same sample name.
+
+This can be useful to ensure you get a single profile per sample, rather than one profile per run or library. Note that in some cases comparing profiles of independent _libraries_ may be useful, so this parameter may not always be suitable.
 
 ### `--save_runmerged_reads`
+Save the run- and library-concatenated reads of a given sample in FASTQ format.
+
+> Only samples that went through the run-merging step of the pipeline will be stored in the resulting directory.
+
+> If you wish to save the files that go to the classification/profiling steps for samples that _did not_ go through run merging, you must supply the appropriate upstream `--save_<preprocessing_step>` flag.
 
 ## Profiling Options
 

@@ -21,7 +21,7 @@
    * [`--shortread_qc_adapterlist`](#--shortread-qc-adapterlist)
    * [`--shortread_qc_mergepairs`](#--shortread-qc-mergepairs)
    * [`--shortread_qc_includeunmerged`](#--shortread-qc-includeunmerged)
-   * [`--shortread_qc_minlength`](#--shortread-qc-minlength)
+   * [`--shortread_qc_minlength`](#--shortread_qc_minlength)
    * [`--shortread_complexityfilter_tool`](#--shortread-complexityfilter-tool)
    * [`--shortread_complexityfilter_entropy`](#--shortread-complexityfilter-entropy)
    * [`--shortread_complexityfilter_bbduk_windowsize`](#--shortread-complexityfilter-bbduk-windowsize)

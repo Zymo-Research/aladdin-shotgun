@@ -10,6 +10,7 @@
 * [Main arguments](#main-arguments)
    * [`-profile`](#-profile)
    * [`--design`](#--design)
+* [Reference databases](#reference-databases)
    * [`--database`](#--database)
 * [Trimming and filtering](#trimming-and-filtering)
    * [`--preprocessing_qc_tool`](#preprocessing_qc_tool)

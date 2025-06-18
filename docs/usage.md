@@ -28,16 +28,16 @@
    * [`--shortread_complexityfilter_bbduk_windowsize`](#--shortread_complexityfilter_bbduk_windowsize)
    * [`--shortread_complexityfilter_bbduk_mask`](#--shortread_complexityfilter_bbduk_mask)
    * [`--shortread_complexityfilter_fastp_threshold`](#--shortread_complexityfilter_fastp_threshold)
-   * [`--shortread_complexityfilter_prinseqplusplus_mode`](#--shortread_complexityfilter_prinseqplusplus-mode)
+   * [`--shortread_complexityfilter_prinseqplusplus_mode`](#--shortread_complexityfilter_prinseqplusplus_mode)
    * [`--shortread_complexityfilter_prinseqplusplus_dustscore`](#--shortread_complexityfilter_prinseqplusplus_dustscore)
    * [`--save_complexityfiltered_reads`](#--save_complexityfiltered_reads)
 * [Preprocessing Long Read QC Options](#preprocessing-long-read-qc-options)
    * [`--perform_longread_qc`](#--perform_longread_qc)
    * [`--longread_qc_skipadaptertrim`](#--longread_qc_skipadaptertrim)
    * [`--longread_qc_skipqualityfilter`](#--longread_qc_skipqualityfilter)
-   * [`--longread_qc_qualityfilter_minlength`](#--longread_qc_quality_filter_minlength)
+   * [`--longread_qc_qualityfilter_minlength`](#--longread_qc_qualityfilter_minlength)
    * [`--longread_qc_qualityfilter_keeppercent`](#--longread_qc_qualityfilter_keeppercent)
-   * [`--longread_qc_qualityfilter_targetbases`](#--longread_qc_qualityfiler_targetbases)
+   * [`--longread_qc_qualityfilter_targetbases`](#--longread_qc_qualityfilter_targetbases)
 * [Preprocessing Host Removal Options](#preprocessing-host-removal-options)
    * [`--perform_shortread_hostremoval`](#--perform_shortread_hostremoval)
    * [`--perform_longread_hostremoval`](#--perform_longread_hostremoval)
@@ -99,7 +99,7 @@
    *  [`--skip_alphadiversity`](#--skip_alphadiversity)
    *  [`--skip_individalpha`](#--skip_individalpha)
    *  [`--skip_betadiversity`](#--skip_betadiversity)
-* [Max job request options](#max-jobs-request-options)
+* [Max job request options](#max-job-request-options)
    * [`--max_cpus`](#--max_cpus)
    * [`--max_memory`](#--max_memory)
    * [`--max_time`](#--max_time)
@@ -360,7 +360,7 @@ Entropy here corresponds to the amount of sequence variation exists within the r
 > - BBDuk: `entropy=`
 > - PRINSEQ++:  `-lc_entropy`
                     
-### `--shortead_complexityfilter_bbduk_windowsize`
+### `--shortread_complexityfilter_bbduk_windowsize`
 Specify the window size to calculate the level entropy within for BBDuk.
 
 > Modifies tool parameter(s):

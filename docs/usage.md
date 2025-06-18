@@ -109,20 +109,20 @@
    * [`--validate_params`](#--validate_params)
    * [`--show_hidden_params`](#--show_hidden_params)
    * [`--tracedir`](#--tracedir)
+   * [`--publish_dir_mode`](#--publish_dir_mode)
+   * [`--multiqc_logo`](#--multiqc_logo)
+   * [`--igenomes_base`](#--igenomes_base)
 * [Generic options](#generic-options)
    * [`--help`](#--help)
    * [`--version`](#--version)
-   * [`--publish_dir_mode`](#--publish_dir_mode)
    * [`--email_on_fail`](#--email_on_fail)
    * [`--plaintext_email`](#--plaintext_email)
    * [`--monochrome_logs`](#--monochrome_logs)
    * [`--hook_url`](#--hook_url)
-   * [`--multiqc_logo`](#--multiqc_logo)
    * [`--multiqc_methods_description`](#--multiqc_methods_description)
    * [`--ignore_failed_samples`](#--ignore_failed_samples)
    * [`--report_name`](#--report_name)
    * [`--genome`](#--genome)
-   * [`--igenomes_base`](#--igenomes_base)
    * [`--igenomes_ignore`](#--igenomes_ignore)
 
 
@@ -742,15 +742,21 @@ By default, parameters set as _hidden_ in the schema are not shown on the comman
 ### `--tracedir`
 Directory to keep pipeline Nextflow logs and reports.
 
+### `--publish_dir_mode`
+The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.
+
+### `--multiqc_logo`
+Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file
+
+### `--igenomes_base`
+Directory / URL base for iGenomes references.
+
 ## Generic options
 ### `--help`
 Display help text.
 
 ### `--version`
 Display version and exit.
-
-### `--publish_dir_mode`
-The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.
 
 ### `--email_on_fail`
 An email address to send a summary email to when the pipeline is completed - ONLY sent if the pipeline does not exit successfully.
@@ -764,9 +770,6 @@ Do not use coloured log outputs.
 ### `--hook_url`
 Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.
 
-### `--multiqc_logo`
-Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file
-
 ### `--multiqc_methods_description`
 Custom MultiQC yaml file containing HTML including a methods description.
 
@@ -778,9 +781,6 @@ Name for report title and report file name.
 
 ### `--genome`
 If using a reference genome configured in the pipeline using iGenomes, use this parameter to give the ID for the reference. This is then used to build the full paths for all required reference genome files e.g. `--genome GRCh38`. \n\nSee the [nf-core website docs](https://nf-co.re/usage/reference_genomes) for more details.
-
-### `--igenomes_base`
-Directory / URL base for iGenomes references.
 
 ### `--igenomes_ignore`
 Do not load `igenomes.config` when running the pipeline. You may choose this option if you observe clashes between custom parameters and those supplied in `igenomes.config`.

@@ -70,20 +70,15 @@
    * [`--motus_use_relative_abundance`](#--motus_use_relative_abundance)
    * [`--motus_save_mgc_read_counts`](#--motus_save_mgc_read_counts)
    * [`--motus_remove_ncbi_ids`](#--motus_remove_ncbi_ids)
-* [Postprocessing and visualization options](#postprocessing-and-visualization-options)
+* [Visualization and diversity options](#visualization-and-diversity-options)
    * [`--lowread_filter`](#--lowread_filter)
    * [`--min_frequency`](#--min_frequency)
    * [`--min_samples`](#--min_samples)
    * [`--qiime_tax_agglom_min`](#--qiime_tax_agglom_min)
    * [`--qiime_tax_agglom_max`](#--qiime_tax_agglom_max)
    * [`--ancombc_fdr_cutoff`](#--ancombc_fdr_cutoff)
-   * [`--skip_heatmap`](#--skip_heatmap)
-   * [`--skip_alpha_rarefaction`](#--skip_alpha_rarefaction)
    * [`--top_taxa`](#--top_taxa)
    * [`--group_of_interest`](#--group_of_interest)
-   * [`--skip_alphadiversity`](#--skip_alphadiversity)
-   * [`--skip_individalpha`](#--skip_individalpha)
-   * [`--skip_betadiversity`](#--skip_betadiversity)
    * [`--run_profile_standardisation`](#--run_profile_standardisation)
    * [`--standaridisation_motus_generation`](#--standaridisation_motus_generation)
    * [`--run_krona`](#--run_krona)
@@ -94,34 +89,42 @@
    * [`--taxpasta_add_rank`](#--taxpasta_add_rank)
    * [`--taxpasta_add_lineage`](#--taxpasta_add_lineage)
    * [`--taxpasta_add_idlineage`](#--taxpasta_add_idlineage)
+* [AMR Options](#amr-options)
+   * [`--run_amr`](#--run_amr)
+   * [`--resistome_threshold`](#--resistome_threshold)
+   * [`--amr_index_files`](#--amr_index_files)
+* [Skipping options](#skipping-options)
+   *  [`--skip_heatmap`](#--skip_heatmap)
+   *  [`--skip_alpha_rarefaction`](#--skip_alpha_rarefaction)
+   *  [`--skip_alphadiversity`](#--skip_alphadiversity)
+   *  [`--skip_individalpha`](#--skip_individalpha)
+   *  [`--skip_betadiversity`](#--skip_betadiversity)
 * [Max job request options](#max-jobs-request-options)
    * [`--max_cpus`](#--max_cpus)
    * [`--max_memory`](#--max_memory)
    * [`--max_time`](#--max_time)
+* [Internal options](#internal-options)
+   * [`--multiqc_config`](#--multiqc_config)
+   * [`--max_multiqc_email_size`](#--max_multiqc_email_size)
+   * [`--validate_params`](#--validate_params)
+   * [`--show_hidden_params`](#--show_hidden_params)
+   * [`--tracedir`](#--tracedir)
 * [Generic options](#generic-options)
    * [`--help`](#--help)
    * [`--version`](#--version)
    * [`--publish_dir_mode`](#--publish_dir_mode)
    * [`--email_on_fail`](#--email_on_fail)
    * [`--plaintext_email`](#--plaintext_email)
-   * [`--max_multiqc_email_size`](#--max_multiqc_email_size)
    * [`--monochrome_logs`](#--monochrome_logs)
    * [`--hook_url`](#--hook_url)
-   * [`--multiqc_config`](#--multiqc_config)
    * [`--multiqc_logo`](#--multiqc_logo)
    * [`--multiqc_methods_description`](#--multiqc_methods_description)
-   * [`--tracedir`](#--tracedir)
-   * [`--validate_params`](#--validate_params)
-   * [`--show_hidden_params`](#--show_hidden_params)
    * [`--ignore_failed_samples`](#--ignore_failed_samples)
    * [`--report_name`](#--report_name)
    * [`--genome`](#--genome)
    * [`--igenomes_base`](#--igenomes_base)
    * [`--igenomes_ignore`](#--igenomes_ignore)
-* [AMR Options](#amr-options)
-   * [`--run_amr`](#--run_amr)
-   * [`--resistome_threshold`](#--resistome_threshold)
-   * [`--amr_index_files`](#--amr_index_files)
+
 
 
 ## Introduction
@@ -591,14 +594,13 @@ Turn on saving the mgc reads count.
 ### `--motus_remove_ncbi_ids`
 Turn on removing NCBI taxonomic IDs.
 
-## Postprocessing and visualization options
+## Visualization and diversity options
 
 ### `--lowread_filter`
 Applies a read count filter for samples before downstream analysis. Samples must have at least this many reads with assigned taxonomy to be included in analyses such as alpha and beta diversity. Default is 50,000.
 
 ### `--min_frequency`
 Removes taxa with fewer than this many total reads assigned among all samples. Default setting of 1 means this filter is disabled, and all taxa will be kept.
-
 
 ### `--min_samples`
 Remove taxa that were detected in fewer than this many samples. Default setting of 1 means this filter is disabled, and all taxa will be kept.
@@ -612,26 +614,11 @@ There are seven levels of taxonomy rankings: kingdom[1], phylum[2], class[3], or
 ### `--ancombc_fdr_cutoff`
 FDR threshold for a taxa to be considered significant and displayed on the ANCOM-BC plot
 
-### `--skip_heatmap`
-Remove off heatmap plot from MultiQC report
-
-### `--skip_alpha_rarefaction`
-Turn off alpha rarefaction analysis and remove Alpha Rarefaction plot from MultiQC report
-
 ### `--top_taxa`
 Specify the maximum number of top taxa from each sample you want to compare in QIIME_HEATMAP
 
 ### `--group_of_interest`
 Group(s) of taxa that are of specific interest. Abundances of these taxa will be summarized in a separate file and plotted in a separate section in the report to highlight these taxa.
-
-### `--skip_alphadiversity`
-Turn off alpha diversity analysis and remove alpha diversity plot from MultiQC report
-
-### `--skip_individalpha`
-Turn off the chart showing individual alpha diversity per sample.
-
-### `--skip_betadiversity`
-Turn off beta diversity analysis and remove beta diversity plot from MultiQC reports
 
 ### `--run_profile_standardisation`
 Turns on standardisation of output OTU tables across all tools; each into a TSV format following the following scheme:
@@ -700,6 +687,34 @@ The standard output format of taxpasta is a two-column table including the read 
 Modifies tool parameter(s):
 - taxpasta: `--taxpasta_add_idlineage`
 
+## AMR Options
+
+### `--run_amr`
+Whether or not to conduct analysis for antimicrobial resistance genes.
+
+### `--resistome_threshold`
+The minimum proportion of nucleotides that have aligned reads to for any AMR gene to be reported.
+
+### `--amr_index_files`
+Path to files related to AMR analysis.
+
+## Skipping options
+
+### `--skip_heatmap`
+Remove off heatmap plot from MultiQC report
+
+### `--skip_alpha_rarefaction`
+Turn off alpha rarefaction analysis and remove Alpha Rarefaction plot from MultiQC report
+
+### `--skip_alphadiversity`
+Turn off alpha diversity analysis and remove alpha diversity plot from MultiQC report
+
+### `--skip_individalpha`
+Turn off the chart showing individual alpha diversity per sample.
+
+### `--skip_betadiversity`
+Turn off beta diversity analysis and remove beta diversity plot from MultiQC reports
+
 ## Max job request options
 
 ### `--max_cpus`
@@ -711,8 +726,23 @@ Use to set an upper-limit for the memory requirement for each process. Should be
 ### `--max_time`
 Use to set an upper-limit for the time requirement for each process. Should be a string in the format integer-unit e.g. `--max_time '2.h'`
 
-## Generic options
+## Internal options
+### `--multiqc_config`
+Custom config file to supply to MultiQC.
 
+### `--max_multiqc_email_size`
+File size limit when attaching MultiQC reports to summary emails.
+
+### `--validate_params`
+Boolean whether to validate parameters against the schema at runtime
+
+### `--show_hidden_params`
+By default, parameters set as _hidden_ in the schema are not shown on the command line when a user runs with `--help`. Specifying this option will tell the pipeline to show all parameters
+
+### `--tracedir`
+Directory to keep pipeline Nextflow logs and reports.
+
+## Generic options
 ### `--help`
 Display help text.
 
@@ -728,32 +758,17 @@ An email address to send a summary email to when the pipeline is completed - ONL
 ### `--plaintext_email`
 Send plain-text email instead of HTML.
 
-### `--max_multiqc_email_size`
-File size limit when attaching MultiQC reports to summary emails.
-
 ### `--monochrome_logs`
 Do not use coloured log outputs.
 
 ### `--hook_url`
 Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.
 
-### `--multiqc_config`
-Custom config file to supply to MultiQC.
-
 ### `--multiqc_logo`
 Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file
 
 ### `--multiqc_methods_description`
 Custom MultiQC yaml file containing HTML including a methods description.
-
-### `--tracedir`
-Directory to keep pipeline Nextflow logs and reports.
-
-### `--validate_params`
-Boolean whether to validate parameters against the schema at runtime
-
-### `--show_hidden_params`
-By default, parameters set as _hidden_ in the schema are not shown on the command line when a user runs with `--help`. Specifying this option will tell the pipeline to show all parameters
 
 ### `--ignore_failed_samples`
 Whether to ignore samples that fail QC and taxonomy profiling steps and carry on with good samples. Default True. Set to False to force the pipeline to abort when any samples fails.
@@ -769,17 +784,6 @@ Directory / URL base for iGenomes references.
 
 ### `--igenomes_ignore`
 Do not load `igenomes.config` when running the pipeline. You may choose this option if you observe clashes between custom parameters and those supplied in `igenomes.config`.
-
-## AMR Options
-
-### `--run_amr`
-Whether or not to conduct analysis for antimicrobial resistance genes.
-
-### `--resistome_threshold`
-The minimum proportion of nucleotides that have aligned reads to for any AMR gene to be reported.
-
-### `--amr_index_files`
-Path to files related to AMR analysis.
 
 
 
@@ -1022,594 +1026,3 @@ For more information how to set up your input samplesheet, see [Multiple runs of
 Activating this functionality will concatenate the FASTQ files with the same sample name _after_ the optional preprocessing steps and _before_ classification/profiling. Note that libraries with runs of different pairing types will **not** be merged and this will be indicated on output files with a `_se` or `_pe` suffix to the sample name accordingly.
 
 You can optionally save the FASTQ output of the run merging with the `--save_runmerged_reads`.
-
-#### Classification and Profiling
-
-The following sections provide tips and suggestions for running the different taxonomic classification and profiling tools _within the pipeline_. For advice and/or guidance whether you should run a particular tool on your specific data, please see the documentation of each tool!
-
-An important distinction between the different tools in included in the pipeline is classification versus profiling. Taxonomic _classification_ is concerned with simply detecting the presence of species in a given sample. Taxonomic _profiling_ involves additionally estimating the _abundance_ of each species.
-
-Note that not all taxonomic classification tools (e.g. Kraken, MALT, Kaiju) performs _profiling_, but all taxonomic profilers (e.g. MetaPhlAn, mOTUs, Bracken) must perform some form of _classification_ prior to profiling.
-
-For advice as to which tool to run in your context, please see the documentation of each tool.
-
-> 🖊️ If you would like to change this behaviour, please contact us on the [nf-core slack](https://nf-co.re/join) and we can discuss this.
-
-Not all tools currently have dedicated tips, suggestions and/or recommendations, however we welcome further contributions for existing and additional tools via pull requests to the [nf-core/taxprofiler repository](https://github.com/nf-core/taxprofiler)!
-
-##### Bracken
-
-You must make sure to also activate Kraken2 to run Bracken in the pipeline.
-
-It is unclear whether Bracken is suitable for running long reads, as it makes certain assumptions about read lengths. Furthemore, during testing we found issues where Bracken would fail on the long-read test data.
-
-Therefore currently nf-core/taxprofiler does not run Bracken on data specified as being sequenced with `OXFORD_NANOPORE` in the input samplesheet.
-
-##### Centrifuge
-
-Centrifuge currently does not accept FASTA files as input, therefore no output will be produced for these input files.
-
-##### DIAMOND
-
-DIAMOND only allows output of a single file format at a time, therefore parameters such `--diamond_save_reads` supplied will result in only aligned reads in SAM format will be produced, no taxonomic profiles will be available. Be aware of this when setting up your pipeline runs, depending on your particular use case.
-
-##### Kaiju
-
-Currently, no specific tips or suggestions.
-
-##### Kraken2
-
-Currently, no specific tips or suggestions.
-
-##### KrakenUniq
-
-Currently, no specific tips or suggestions.
-
-##### MALT
-
-MALT does not support paired-end reads alignment (unlike other tools), therefore nf-core/taxprofiler aligns these as indepenent files if read-merging is skipped. If you skip merging, you can sum or average the results of the counts of the pairs.
-
-Krona can only be run on MALT output if path to Krona taxonomy database supplied to `--krona_taxonomy_directory`. Therefore if you do not supply the a Krona directory, Krona plots will not be produced for MALT.
-
-##### MetaPhlAn4
-
-MetaPhlAn4 currently does not accept FASTA files as input, therefore no output will be produced for these input files.
-
-##### mOTUs
-
-mOTUs currently does not accept FASTA files as input, therefore no output will be produced for these input files.
-
-#### Post Processing
-
-##### Visualisation
-
-nf-core/taxprofiler supports generation of Krona interactive pie chart plots for the following compatible tools.
-
-- Kraken2
-- Centrifuge
-- Kaiju
-- MALT
-
-> ⚠️ MALT KRONA plots cannot be generated automatically, you must also specify a Krona taxonomy directory with `--krona_taxonomy_directory` if you wish to generate these.
-
-##### Multi-Table Generation
-
-In addition to per-sample profiles, the pipeline also supports generation of 'native' multi-sample taxonomic profiles (i.e., those generated by the taxonomic profiling tools themselves or additional utility scripts provided by the tool authors).
-
-These are executed on a per-database level. I.e., you will get a multi-sample taxon table for each database you provide for each tool and will be placed in the same directory as the directories containing the per-sample profiles.
-
-The following tools will produce multi-sample taxon tables:
-
-- **Bracken** (via bracken's `combine_bracken_outputs.py` script)
-- **Centrifuge** (via KrakenTools' `combine_kreports.py` script)
-- **Kaiju** (via Kaiju's `kaiju2table` tool)
-- **Kraken2** (via KrakenTools' `combine_kreports.py` script)
-- **MetaPhlAn4** (via MetaPhlAn's `merge_metaphlan_tables.py` script)
-- **mOTUs** (via the `motus merge` command)
-
-Note that the multi-sample tables from these folders are not inter-operable with each other as they can have different formats.
-
-### Updating the pipeline
-
-When you run the above command, Nextflow automatically pulls the pipeline code from GitHub and stores it as a cached version. When running the pipeline after this, it will always use the cached version if available - even if the pipeline has been updated since. To make sure that you're running the latest version of the pipeline, make sure that you regularly update the cached version of the pipeline:
-
-```bash
-nextflow pull nf-core/taxprofiler
-```
-
-### Reproducibility
-
-It is a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
-
-First, go to the [nf-core/taxprofiler releases page](https://github.com/nf-core/taxprofiler/releases) and find the latest pipeline version - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`. Of course, you can switch to another version by changing the number after the `-r` flag.
-
-This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future. For example, at the bottom of the MultiQC reports.
-
-## Core Nextflow arguments
-
-> **NB:** These options are part of Nextflow and use a _single_ hyphen (pipeline parameters use a double-hyphen).
-
-### `-profile`
-
-Use this parameter to choose a configuration profile. Profiles can give configuration presets for different compute environments.
-
-Several generic profiles are bundled with the pipeline which instruct the pipeline to use software packaged using different methods (Docker, Singularity, Podman, Shifter, Charliecloud, Conda) - see below.
-
-> We highly recommend the use of Docker or Singularity containers for full pipeline reproducibility, however when this is not possible, Conda is also supported.
-
-The pipeline also dynamically loads configurations from [https://github.com/nf-core/configs](https://github.com/nf-core/configs) when it runs, making multiple config profiles for various institutional clusters available at run time. For more information and to see if your system is available in these configs please see the [nf-core/configs documentation](https://github.com/nf-core/configs#documentation).
-
-Note that multiple profiles can be loaded, for example: `-profile test,docker` - the order of arguments is important!
-They are loaded in sequence, so later profiles can overwrite earlier profiles.
-
-If `-profile` is not specified, the pipeline will run locally and expect all software to be installed and available on the `PATH`. This is _not_ recommended, since it can lead to different results on different machines dependent on the computer enviroment.
-
-- `test`
-  - A profile with a complete configuration for automated testing
-  - Includes links to test data so needs no other parameters
-- `docker`
-  - A generic configuration profile to be used with [Docker](https://docker.com/)
-- `singularity`
-  - A generic configuration profile to be used with [Singularity](https://sylabs.io/docs/)
-- `podman`
-  - A generic configuration profile to be used with [Podman](https://podman.io/)
-- `shifter`
-  - A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
-- `charliecloud`
-  - A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
-- `conda`
-  - A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter or Charliecloud.
-
-### `-resume`
-
-Specify this when restarting a pipeline. Nextflow will use cached results from any pipeline steps where the inputs are the same, continuing from where it got to previously. For input to be considered the same, not only the names must be identical but the files' contents as well. For more info about this parameter, see [this blog post](https://www.nextflow.io/blog/2019/demystifying-nextflow-resume.html).
-
-You can also supply a run name to resume a specific run: `-resume [run-name]`. Use the `nextflow log` command to show previous run names.
-
-### `-c`
-
-Specify the path to a specific config file (this is a core Nextflow command). See the [nf-core website documentation](https://nf-co.re/usage/configuration) for more information.
-
-## Custom configuration
-
-### Resource requests
-
-Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customise the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time. For most of the steps in the pipeline, if the job exits with any of the error codes specified [here](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L18) it will automatically be resubmitted with higher requests (2 x original, then 3 x original). If it still fails after the third attempt then the pipeline execution is stopped.
-
-For example, if the nf-core/rnaseq pipeline is failing after multiple re-submissions of the `STAR_ALIGN` process due to an exit code of `137` this would indicate that there is an out of memory issue:
-
-```console
-[62/149eb0] NOTE: Process `NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN (WT_REP1)` terminated with an error exit status (137) -- Execution is retried (1)
-Error executing process > 'NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN (WT_REP1)'
-
-Caused by:
-    Process `NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN (WT_REP1)` terminated with an error exit status (137)
-
-Command executed:
-    STAR \
-        --genomeDir star \
-        --readFilesIn WT_REP1_trimmed.fq.gz  \
-        --runThreadN 2 \
-        --outFileNamePrefix WT_REP1. \
-        <TRUNCATED>
-
-Command exit status:
-    137
-
-Command output:
-    (empty)
-
-Command error:
-    .command.sh: line 9:  30 Killed    STAR --genomeDir star --readFilesIn WT_REP1_trimmed.fq.gz --runThreadN 2 --outFileNamePrefix WT_REP1. <TRUNCATED>
-Work dir:
-    /home/pipelinetest/work/9d/172ca5881234073e8d76f2a19c88fb
-
-Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
-```
-
-#### For beginners
-
-A first step to bypass this error, you could try to increase the amount of CPUs, memory, and time for the whole pipeline. Therefor you can try to increase the resource for the parameters `--max_cpus`, `--max_memory`, and `--max_time`. Based on the error above, you have to increase the amount of memory. Therefore you can go to the [parameter documentation of rnaseq](https://nf-co.re/rnaseq/3.9/parameters) and scroll down to the `show hidden parameter` button to get the default value for `--max_memory`. In this case 128GB, you than can try to run your pipeline again with `--max_memory 200GB -resume` to skip all process, that were already calculated. If you can not increase the resource of the complete pipeline, you can try to adapt the resource for a single process as mentioned below.
-
-#### Advanced option on process level
-
-To bypass this error you would need to find exactly which resources are set by the `STAR_ALIGN` process. The quickest way is to search for `process STAR_ALIGN` in the [nf-core/rnaseq Github repo](https://github.com/nf-core/rnaseq/search?q=process+STAR_ALIGN).
-We have standardised the structure of Nextflow DSL2 pipelines such that all module files will be present in the `modules/` directory and so, based on the search results, the file we want is `modules/nf-core/star/align/main.nf`.
-If you click on the link to that file you will notice that there is a `label` directive at the top of the module that is set to [`label process_high`](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/modules/nf-core/software/star/align/main.nf#L9).
-The [Nextflow `label`](https://www.nextflow.io/docs/latest/process.html#label) directive allows us to organise workflow processes in separate groups which can be referenced in a configuration file to select and configure subset of processes having similar computing requirements.
-The default values for the `process_high` label are set in the pipeline's [`base.config`](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L33-L37) which in this case is defined as 72GB.
-Providing you haven't set any other standard nf-core parameters to **cap** the [maximum resources](https://nf-co.re/usage/configuration#max-resources) used by the pipeline then we can try and bypass the `STAR_ALIGN` process failure by creating a custom config file that sets at least 72GB of memory, in this case increased to 100GB.
-The custom config below can then be provided to the pipeline via the [`-c`](#-c) parameter as highlighted in previous sections.
-
-```nextflow
-process {
-    withName: 'NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN' {
-        memory = 100.GB
-    }
-}
-```
-
-> **NB:** We specify the full process name i.e. `NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN` in the config file because this takes priority over the short name (`STAR_ALIGN`) and allows existing configuration using the full process name to be correctly overridden.
->
-> If you get a warning suggesting that the process selector isn't recognised check that the process name has been specified correctly.
-
-### Updating containers (advanced users)
-
-The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies. If for some reason you need to use a different version of a particular tool with the pipeline then you just need to identify the `process` name and override the Nextflow `container` definition for that process using the `withName` declaration. For example, in the [nf-core/viralrecon](https://nf-co.re/viralrecon) pipeline a tool called [Pangolin](https://github.com/cov-lineages/pangolin) has been used during the COVID-19 pandemic to assign lineages to SARS-CoV-2 genome sequenced samples. Given that the lineage assignments change quite frequently it doesn't make sense to re-release the nf-core/viralrecon everytime a new version of Pangolin has been released. However, you can override the default container used by the pipeline by creating a custom config file and passing it as a command-line argument via `-c custom.config`.
-
-1. Check the default version used by the pipeline in the module file for [Pangolin](https://github.com/nf-core/viralrecon/blob/a85d5969f9025409e3618d6c280ef15ce417df65/modules/nf-core/software/pangolin/main.nf#L14-L19)
-2. Find the latest version of the Biocontainer available on [Quay.io](https://quay.io/repository/biocontainers/pangolin?tag=latest&tab=tags)
-3. Create the custom config accordingly:
-
-   - For Docker:
-
-     ```nextflow
-     process {
-         withName: PANGOLIN {
-             container = 'quay.io/biocontainers/pangolin:3.0.5--pyhdfd78af_0'
-         }
-     }
-     ```
-
-   - For Singularity:
-
-     ```nextflow
-     process {
-         withName: PANGOLIN {
-             container = 'https://depot.galaxyproject.org/singularity/pangolin:3.0.5--pyhdfd78af_0'
-         }
-     }
-     ```
-
-   - For Conda:
-
-     ```nextflow
-     process {
-         withName: PANGOLIN {
-             conda = 'bioconda::pangolin=3.0.5'
-         }
-     }
-     ```
-
-> **NB:** If you wish to periodically update individual tool-specific results (e.g. Pangolin) generated by the pipeline then you must ensure to keep the `work/` directory otherwise the `-resume` ability of the pipeline will be compromised and it will restart from scratch.
-
-### nf-core/configs
-
-In most cases, you will only need to create a custom config as a one-off but if you and others within your organisation are likely to be running nf-core pipelines regularly and need to use the same settings regularly it may be a good idea to request that your custom config file is uploaded to the `nf-core/configs` git repository. Before you do this please can you test that the config file works with your pipeline of choice using the `-c` parameter. You can then create a pull request to the `nf-core/configs` repository with the addition of your config file, associated documentation file (see examples in [`nf-core/configs/docs`](https://github.com/nf-core/configs/tree/master/docs)), and amending [`nfcore_custom.config`](https://github.com/nf-core/configs/blob/master/nfcore_custom.config) to include your custom profile.
-
-See the main [Nextflow documentation](https://www.nextflow.io/docs/latest/config.html) for more information about creating your own configuration files.
-
-If you have any questions or issues please send us a message on [Slack](https://nf-co.re/join/slack) on the [`#configs` channel](https://nfcore.slack.com/channels/configs).
-
-## Azure Resource Requests
-
-To be used with the `azurebatch` profile by specifying the `-profile azurebatch`.
-We recommend providing a compute `params.vm_type` of `Standard_D16_v3` VMs by default but these options can be changed if required.
-
-Note that the choice of VM size depends on your quota and the overall workload during the analysis.
-For a thorough list, please refer the [Azure Sizes for virtual machines in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
-
-## Running in the background
-
-Nextflow handles job submissions and supervises the running jobs. The Nextflow process must run until the pipeline is finished.
-
-The Nextflow `-bg` flag launches Nextflow in the background, detached from your terminal so that the workflow does not stop if you log out of your session. The logs are saved to a file.
-
-Alternatively, you can use `screen` / `tmux` or similar tool to create a detached session which you can log back into at a later time.
-Some HPC setups also allow you to run nextflow within a cluster job submitted your job scheduler (from where it submits more jobs).
-
-## Nextflow memory requirements
-
-In some cases, the Nextflow Java virtual machines can start to request a large amount of memory.
-We recommend adding the following line to your environment to limit this (typically in `~/.bashrc` or `~./bash_profile`):
-
-```bash
-NXF_OPTS='-Xms1g -Xmx4g'
-```
-
-## Tutorials
-
-### Retrieving databases or building custom databases
-
-Not all taxonomic profilers provide ready-made or default databases. Here we will give brief guidance on how to build custom databases for each supported taxonomic profiler.
-
-You should always consult the documentation of each tool for more information, as here we only provide short minimal-tutorials as quick reference guides (with no guarantee they are up to date).
-
-The following tutorials assumes you already have the tool available (e.g. installed locally, or via conda, docker etc.), and you have already downloaded the FASTA files you wish to build into a database.
-
-#### Bracken custom database
-
-Bracken does not require an independent database nor not provide any default databases for classification/profiling, but rather builds upon Kraken2 databases. See [Kraken2](#kraken2-custom-database) for more information on how to build these.
-
-In addition to a Kraken2 database, you also need to have the (average) read lengths (in bp) of your sequencing experiment, the K-mer size used to build the Kraken2 database, and Kraken2 available on your machine.
-
-```bash
-bracken-build -d <KRAKEN_DB_DIR> -k <KRAKEN_DB_KMER_LENGTH> -l <READLENGTH>
-```
-
-> 🛈 You can speed up database construction by supplying the threads parameter (`-t`).
-
-> 🛈 If you do not have Kraken2 in your `$PATH` you can point to the binary with `-x /<path>/<to>/kraken2`.
-
-<details markdown="1">
-<summary>Expected files in database directory</summary>
-
-- `bracken`
-  - `hash.k2d`
-  - `opts.k2d`
-  - `taxo.k2d`
-  - `database.kraken`
-  - `database100mers.kmer_distrib`
-  - `database100mers.kraken`
-  - `database150mers.kmer_distrib`
-  - `database150mers.kraken`
-
-</details>
-
-You can follow Bracken [tutorial](https://ccb.jhu.edu/software/bracken/index.shtml?t=manual) for more information.
-
-#### Centrifuge custom database
-
-To build a custom Centrifuge database, a user needs to download taxonomy files, make a custom `seqid2taxid.map` and combine the fasta files together.
-
-In total, you need four components: a tab-separated file mapping sequence IDs to taxonomy IDs (`--conversion-table`), a tab-separated file mapping taxonomy IDs to their parents and rank, up to the root of the tree (`--taxonomy-tree`), a pipe-separated file mapping taxonomy IDs to a name (`--name-table`), and the reference sequences.
-
-An example of custom `seqid2taxid.map`:
-
-```
- NC_001133.9 4392
- NC_012920.1 9606
- NC_001134.8 4392
- NC_001135.5 4392
-```
-
-```bash
-centrifuge-download -o taxonomy taxonomy
-cat *.{fa,fna} > input-sequences.fna
-centrifuge-build -p 4 --conversion-table seqid2taxid.map --taxonomy-tree taxonomy/nodes.dmp --name-table taxonomy/names.dmp input-sequences.fna taxprofiler_cf
-```
-
-<details markdown="1">
-<summary>Expected files in database directory</summary>
-
-- `centrifuge`
-  - `<database_name>.<number>.cf`
-  - `<database_name>.<number>.cf`
-  - `<database_name>.<number>.cf`
-  - `<database_name>.<number>.cf`
-
-</details>
-
-For the Centrifuge custom database documentation, see [here](https://ccb.jhu.edu/software/centrifuge/manual.shtml#custom-database).
-
-#### DIAMOND custom database
-
-To create a custom database for DIAMOND, the user should download and unzip the NCBI's taxonomy files and the input FASTA files.
-
-The download and build steps are as follows:
-
-```bash
-wget ftp://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdmp.zip
-unzip taxdmp.zip
-
-## warning: large file!
-wget ftp://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/prot.accession2taxid.FULL.gz
-
-## warning: takes a long time!
-cat ../raw/*.faa | diamond makedb -d testdb-diamond --taxonmap prot.accession2taxid.FULL.gz --taxonnodes nodes.dmp --taxonnames names.dmp
-
-## clean up
-rm *dmp *txt *gz *prt *zip
-```
-
-<details markdown="1">
-<summary>Expected files in database directory</summary>
-
-- `diamond`
-  - `<database_name>.dmnd`
-
-</details>
-
-A detailed description can be found [here](https://github.com/bbuchfink/diamond/wiki/1.-Tutorial)
-
-#### Kaiju custom database
-
-To build a kaiju database, you need three components: a FASTA file with the protein sequences ,the NCBI taxonomy dump files, and you need to define the uppercase characters of the standard 20 amino acids you wish to include.
-
-> ⚠️ The headers of the protein fasta file must be numeric NCBI taxon identifiers of the protein sequences.
-
-To download the NCBI taxonomy files, please run the following commands:
-
-```bash
-wget https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/new_taxdump/new_taxdump.zip
-unzip new_taxdump.zip
-```
-
-To build the database, run the following command (the contents of taxdump must be in the same location where you run the command):
-
-```bash
-kaiju-mkbwt -a ACDEFGHIKLMNPQRSTVWY -o proteins proteins.faa
-kaiju-mkfmi proteins
-```
-
-> 🛈 You can speed up database construction by supplying the threads parameter (`-t`).
-
-<details markdown="1">
-<summary>Expected files in database directory</summary>
-
-- `kaiju`
-  - `kaiju_db_*.fmi`
-  - `nodes.dmp`
-  - `names.dmp`
-
-</details>
-
-For the Kaiju database construction documentation, see [here](https://github.com/bioinformatics-centre/kaiju#custom-database).
-
-#### Kraken2 custom database
-
-To build a Kraken2 database you need two components: a taxonomy (consisting of `names.dmp`, `nodes.dmp`, and `*accession2taxid`) files, and the FASTA files you wish to include.
-
-To pull the NCBI taxonomy, you can run the following:
-
-```bash
-kraken2-build --download-taxonomy --db <YOUR_DB_NAME>
-```
-
-You can then add your FASTA files with the following build command.
-
-```bash
-kraken2-build --add-to-library *.fna --db <YOUR_DB_NAME>
-```
-
-You can repeat this step multiple times to iteratively add more genomes prior building.
-
-Once all genomes are added to the library, you can build the database (and optionally clean it up):
-
-```bash
-kraken2-build --build --db <YOUR_DB_NAME>
-kraken2-build --clean --db <YOUR_DB_NAME>
-```
-
-You can then add the `<YOUR_DB_NAME>/` path to your nf-core/taxprofiler database input sheet.
-
-<details markdown="1">
-<summary>Expected files in database directory</summary>
-
-- `kraken2`
-  - `opts.k2d`
-  - `hash.k2d`
-  - `taxo.k2d`
-
-</details>
-
-You can follow the Kraken2 [tutorial](https://github.com/DerrickWood/kraken2/blob/master/docs/MANUAL.markdown#custom-databases) for a more detailed description.
-
-#### KrakenUniq custom database
-
-For any KrakenUniq database, you require: taxonomy files, the FASTA files you wish to include, a `seqid2mapid` file, and a k-mer length.
-
-First you must make a `seqid2taxid.map` file which is a two column text file containing the FASTA sequence header and the NCBI taxonomy ID for each sequence:
-
-```
-MT192765.1  2697049
-```
-
-Then make a directory (`<DB_DIR_NAME>/`), containing the `seqid2taxid.map` file, and your FASTA files in a subdirectory called `library/` (these FASTA files can be symlinked). You must then run the `taxonomy` command on the `<DB_DIR_NAME>/` directory, and then build it.
-
-```bash
-mkdir -p <DB_DIR_NAME>/library
-mv `seqid2taxid.map` <DB_DIR_NAME>/
-mv *.fna  <DB_DIR_NAME>/library
-krakenuniq-download --db <DB_DIR_NAME>  taxonomy
-krakenuniq-build --db <DB_DIR_NAME> --kmer-len 31
-```
-
-> 🛈 You can speed up database construction by supplying the threads parameter (`--threads`) to `krakenuniq-build`.
-
-<details markdown="1">
-<summary>Expected files in database directory</summary>
-
-- `krakenuniq`
-  - `opts.k2d`
-  - `hash.k2d`
-  - `taxo.k2d`
-  - `database.idx`
-  - `taxDB`
-
-</details>
-
-Please see the [KrakenUniq documentation](https://github.com/fbreitwieser/krakenuniq#database-building) for more information.
-
-#### MALT custom database
-
-To build a MALT database, you need the FASTA files to include, and an (unzipped) [MEGAN mapping 'db' file](https://software-ab.informatik.uni-tuebingen.de/download/megan6/) for your FASTA type. In addition to the input directory, output directory, and the mapping file database, you also need to specify the sequence type (DNA or Protein) with the `-s` flag.
-
-```bash
-malt-build -i <path>/<to>/<fasta>/*.{fna,fa,fasta} -a2t <path>/<to>/<map>.db -d <YOUR_DB_NAME>/  -s DNA
-```
-
-You can then add the `<YOUR_DB_NAME>/` path to your nf-core/taxprofiler database input sheet.
-
-⚠️ MALT generates very large database files and requires large amounts of RAM. You can reduce both by increasing the step size `-st` (with a reduction in sensitivity).
-
-> 🛈 MALT-build can be multi-threaded with `-t` to speed up building.
-
-<details markdown="1">
-<summary>Expected files in database directory</summary>
-
-- `malt`
-  - `ref.idx`
-  - `taxonomy.idx`
-  - `taxonomy.map`
-  - `index0.idx`
-  - `table0.idx`
-  - `table0.db`
-  - `ref.inf`
-  - `ref.db`
-  - `taxonomy.tre`
-
-</details>
-
-See the [MALT manual](https://software-ab.informatik.uni-tuebingen.de/download/malt/manual.pdf) for more information.
-
-#### MetaPhlAn4 custom database
-
-MetaPhlAn4 does not allow (easy) construction of custom databases. Therefore we recommend to use the prebuilt database of marker genes that is provided by the developers.
-
-To do this you need to have `MetaPhlAn4` installed on your machine.
-
-```bash
-metaphlan --install --bowtie2db <YOUR_DB_NAME>/
-```
-
-You can then add the `<YOUR_DB_NAME>/` path to your nf-core/taxprofiler database input sheet.
-
-> 🛈 It is generally not recommended to modify this database yourself, thus this is currently not supported in the pipeline. However, it is possible to customise the existing database by adding your own marker genomes following the instructions [here](https://github.com/biobakery/MetaPhlAn/wiki/MetaPhlAn-3.1#customizing-the-database).
-
-> 🖊️ If using your own database is relevant for you, please contact the nf-core/taxprofiler developers on the [nf-core slack](https://nf-co.re/join) and we will investigate supporting this.
-
-<details markdown="1">
-<summary>Expected files in database directory</summary>
-
-- `metaphlan4`
-  - `mpa_v30_CHOCOPhlAn_201901.pkl`
-  - `mpa_v30_CHOCOPhlAn_201901.pkl`
-  - `mpa_v30_CHOCOPhlAn_201901.fasta`
-  - `mpa_v30_CHOCOPhlAn_201901.3.bt2`
-  - `mpa_v30_CHOCOPhlAn_201901.4.bt2`
-  - `mpa_v30_CHOCOPhlAn_201901.1.bt2`
-  - `mpa_v30_CHOCOPhlAn_201901.2.bt2`
-  - `mpa_v30_CHOCOPhlAn_201901.rev.1.bt2`
-  - `mpa_v30_CHOCOPhlAn_201901.rev.2.bt2`
-  - `mpa_latest`
-
-</details>
-
-More information on the MetaPhlAn4 database can be found [here](https://github.com/biobakery/MetaPhlAn/wiki/MetaPhlAn-3.1#installation).
-
-#### mOTUs custom database
-
-mOTUs does not provide the ability to construct custom databases. Therefore we recommend to use the the prebuilt database of marker genes provided by the developers.
-
-To do this you need to have `mOTUs` installed on your machine.
-
-```bash
-motus downloadDB
-```
-
-Then supply the `db_mOTU/` path to your nf-core/taxprofiler database input sheet.
-
-> ⚠️ The `db_mOTU/` directory may be downloaded to somewhere in your Python's `site-package` directory. You will have to find this yourself as the exact location varies depends on installation method.
-
-More information on the mOTUs database can be found [here](https://motu-tool.org/installation.html).
-
-## Troubleshooting and FAQs
-
-### I get a warning during centrifuge_kreport process with exit status 255
-
-When a sample has insufficient hits for abundance estimation, the resulting `report.txt` file will be empty.
-
-When trying to convert this to a kraken-style report, the conversion tool will exit with a status code `255`, and provide a `WARN`.
-
-This is **not** an error nor a failure of the pipeline, just your sample has no hits to the provided database when using centrifuge.

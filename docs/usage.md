@@ -440,137 +440,147 @@ Save the run- and library-concatenated reads of a given sample in FASTQ format.
 ### `--min_samples`
                     "description": "Remove taxa that were detected in fewer than this many samples. Default setting of 1 means this filter is disabled, and all taxa will be kept.",
 
-### `--taxonomy_collapse_level`
+### `--qiime_tax_agglom_min`
+		    "description": "There are seven levels of taxonomy rankings: kingdom[1], phylum[2], class[3], order[4], family[5], genus[6], and species[7]. ANCOMBC and heatmap analysis will be conducted at the levels between this minimum parameter and the qiime maximum taxa parameter. Default is 7, species level.",
 
+### `--qiime_tax_agglom_max`
+		    "description": "There are seven levels of taxonomy rankings: kingdom[1], phylum[2], class[3], order[4], family[5], genus[6], and species[7]. ANCOMBC and heatmap analysis will be conducted at the levels between this maximum parameter and the qiime minimum taxa parameter. Default is 7, species level.",
+
+### `--ancombc_fdr_cutoff`
+		    "help_text": "FDR threshold for a taxa to be considered significant and displayed on the ANCOM-BC plot",
 
 ### `--skip_heatmap`
-
+                    "description": "Remove off heatmap plot from MultiQC report",
 
 ### `--skip_alpha_rarefaction`
-
+                    "description": "Turn off alpha rarefaction analysis and remove Alpha Rarefaction plot from MultiQC report",
 
 ### `--top_taxa`
+                    "description": "Specify the maximum number of top taxa from each sample you want to compare in QIIME_HEATMAP",
 
-
-### `--group_of_interests`
-
+### `--group_of_interest`
+                    "description": "Group(s) of taxa that are of specific interest. Abundances of these taxa will be summarized in a separate file and plotted in a separate section in the report to highlight these taxa.",
 
 ### `--skip_alphadiversity`
-
+                    "description": "Turn off alpha diversity analysis and remove alpha diversity plot from MultiQC report",
 
 ### `--skip_individalpha`
-
+                    "description": "Turn off the chart showing individual alpha diversity per sample.",
 
 ### `--skip_betadiversity`
-
+                    "description": "Turn off beta diversity analysis and remove beta diversity plot from MultiQC reports",
 
 ### `--run_profile_standardisation`
-
+                    "help_text": "Turns on standardisation of output OTU tables across all tools; each into a TSV format following the following scheme:\n\n|TAXON   | SAMPLE_A | SAMPLE_B |\n|-------------|----------------|-----------------|\n| taxon_a | 32               | 123             |\n| taxon_b | 1                 | 5                 |\n\nThis currently only is generated for mOTUs.",
 
 ### `--standaridisation_motus_generation`
-
+                    "help_text": "Turn on the saving of the taxonomic output in BIOM format (`.biom`) in the results directory of your pipeline run, instead of the default TSV format.\\n\\nNote this file is from the output of the `motus merge` command.\\n\\n> Modifies tool parameter(s):\\n> - `-B -o`",
 
 ### `--run_krona`
-
+                    "help_text": "Turn on the generation of Krona interactive pie-chart HTMLs for a selection of profilers.\n\nThe tools currently supported are:\n\n- centrifuge\n- kraken2\n- kaiju\n- MALT",
 
 ### `--krona_taxonomy_directory`
-
+                    "help_text": "Specify a path to a Krona taxonomy database directory (i.e. a directory containing a krona generated `.tab` file).\n\nThis is only required for generating Krona plots of MALT output.\n\nNote this taxonomy database must be downloaded and generated with the `updateTaxonomy.sh` script from the krona-tools package.",
 
 ### `--standardisation_taxpasta_format`
-
+                    "description": "The desired output format.",
 
 ### `--taxpasta_taxonomy_dir` 
-
+                    "help_text": "This arguments provides the path to the directory containing taxdump files. At least nodes.dmp and names.dmp are required. A merged.dmp file is optional. \n\nModifies tool parameter(s):\n-taxpasta: `--taxpasta_taxonomy_dir`",
 
 ### `--taxpasta_add_name`
-
+                    "help_text": "The standard output format of taxpasta is a two-column table including the read counts and the integer taxonomic ID. The taxon name can be added as additional information to the output table.\n\nModifies tool parameter(s):\n- taxpasta: `--taxpasta_add_name`",
 
 ### `--taxpasta_add_rank`
-
+                    "help_text": "The standard output format of taxpasta is a two-column table including the read counts and the integer taxonomic ID. The taxon rank can be added as additional information to the output table.\n\nModifies tool parameter(s):\n- taxpasta: `--taxpasta_add_rank`",
 
 ### `--taxpasta_add_lineage`
-
+                    "help_text": "\nThe standard output format of taxpasta is a two-column table including the read counts and the integer taxonomic ID. The taxon's entire lineage with the taxon names separated by semi-colons can be added as additional information to the output table.\n\nModifies tool parameter(s):\n- taxpasta: `--taxpasta_add_lineage`\n",
 
 ### `--taxpasta_add_idlineage`
-
+                    "help_text": "\nThe standard output format of taxpasta is a two-column table including the read counts and the integer taxonomic ID. The taxon's entire lineage with the taxon identifiers separated by semi-colons can be added as additional information to the output table.\n\nModifies tool parameter(s):\n- taxpasta: `--taxpasta_add_idlineage`\n",
 
 ## Max job request options
 
 ### `--max_cpus`
-
+                    "description": "Maximum number of CPUs that can be requested for any single job.", 
+                                        "help_text": "Use to set an upper-limit for the CPU requirement for each process. Should be an integer e.g. `--max_cpus 1`"
 
 ### `--max_memory`
-
+                    "help_text": "Use to set an upper-limit for the memory requirement for each process. Should be a string in the format integer-unit e.g. `--max_memory '8.GB'`"
 
 ### `--max_time`
-
+                    "help_text": "Use to set an upper-limit for the time requirement for each process. Should be a string in the format integer-unit e.g. `--max_time '2.h'`"
 
 ## Generic options
 
 ### `--help`
-
+                    "description": "Display help text.",
 
 ### `--version`
-
+                    "description": "Display version and exit.",
 
 ### `--publish_dir_mode`
-
+                    "help_text": "The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.",
 
 ### `--email_on_fail`
-
+                    "help_text": "An email address to send a summary email to when the pipeline is completed - ONLY sent if the pipeline does not exit successfully.",
 
 ### `--plaintext_email`
-
+                    "description": "Send plain-text email instead of HTML.",
 
 ### `--max_multiqc_email_size`
-
+                    "description": "File size limit when attaching MultiQC reports to summary emails.",
 
 ### `--monochrome_logs`
-
+                    "description": "Do not use coloured log outputs.",
 
 ### `--hook_url`
-
+                    "help_text": "Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.",
 
 ### `--multiqc_config`
-
+                    "description": "Custom config file to supply to MultiQC.",
 
 ### `--multiqc_logo`
-
+                    "description": "Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file",
 
 ### `--multiqc_methods_description`
-
+                    "description": "Custom MultiQC yaml file containing HTML including a methods description.",
 
 ### `--tracedir`
-
+                    "description": "Directory to keep pipeline Nextflow logs and reports.",
 
 ### `--validate_params`
-
+                    "description": "Boolean whether to validate parameters against the schema at runtime",
 
 ### `--show_hidden_params`
-
+                    "help_text": "By default, parameters set as _hidden_ in the schema are not shown on the command line when a user runs with `--help`. Specifying this option will tell the pipeline to show all parameters."
 
 ### `--ignore_failed_samples`
+                    "description": "Whether to ignore samples that fail QC and taxonomy profiling steps and carry on with good samples. Default True. Set to False to force the pipeline to abort when any samples fails.",
 
+### `--report_name`
+                    "description": "Name for report title and report file name.",
 
 ### `--genome`
-
+                    "help_text": "If using a reference genome configured in the pipeline using iGenomes, use this parameter to give the ID for the reference. This is then used to build the full paths for all required reference genome files e.g. `--genome GRCh38`. \n\nSee the [nf-core website docs](https://nf-co.re/usage/reference_genomes) for more details.",
 
 ### `--igenomes_base`
-
+                    "description": "Directory / URL base for iGenomes references.",
 
 ### `--igenomes_ignore`
-
+                    "help_text": "Do not load `igenomes.config` when running the pipeline. You may choose this option if you observe clashes between custom parameters and those supplied in `igenomes.config`."
 
 ## AMR Options
 
 ### `--run_amr`
-
+                    "description": "Whether or not to conduct analysis for antimicrobial resistance genes.",
 
 ### `--resistome_threshold`
-
+                    "description": "The minimum proportion of nucleotides that have aligned reads to for any AMR gene to be reported.",
 
 ### `--amr_index_files`
-
+                    "description": "Path to files related to AMR analysis.",
 
 
 

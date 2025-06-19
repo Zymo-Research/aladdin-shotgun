@@ -293,7 +293,9 @@ Depending on the parameters you set, these reads will be a mixture of: adapter c
 Specify which tool to use for short-read quality control. This will remove adapters, trim low quality bases, remove reads that are too short, etc. Choose 'DO_NOT_RUN' if you don't want this step performed. Default: fastp
 
 ### `--shortread_qc_skipadaptertrim`
-Skip the removal of sequencing adapters. \n\nThis often can be useful to speed up run-time of the pipeline when analysing data downloaded from public databases such as the ENA or SRA, as adapters should already be removed (however we recommend to check FastQC results to ensure this is the case).
+Skip the removal of sequencing adapters.
+
+This often can be useful to speed up run-time of the pipeline when analysing data downloaded from public databases such as the ENA or SRA, as adapters should already be removed (however we recommend to check FastQC results to ensure this is the case).
 
 ### `--shortread_qc_adapter1`
 Specify a custom forward or R1 adapter sequence to be removed from reads.
@@ -353,7 +355,7 @@ Specify the minimum 'entropy' value for complexity filtering for BBDuk or PRINSE
 
 Note that this value will only be used for PRINSEQ++ if `--shortread_complexityfilter_prinseqplusplus_mode` is set to `entropy`.
 
-Entropy here corresponds to the amount of sequence variation exists within the read. Higher values correspond to more variety, and thus will likely reslut in more specific matching to a taxon's reference genome. The trade off here is fewer reads (or abundance information) available for having a confident identification.
+Entropy here corresponds to the amount of sequence variation exists within the read. Higher values correspond to more variety, and thus will likely result in more specific matching to a taxon's reference genome. The trade off here is fewer reads (or abundance information) available for having a confident identification.
 
 
 > Modifies tool parameter(s):
@@ -426,7 +428,7 @@ Removes the worst reads until only the specified value of bases remain, useful f
 ## Preprocessing Host Removal Options
 
 ### `--perform_shortread_hostremoval`
-Turns on the ability to remove short-reads from the that derived from a known organism, using Bowtie2 and samtools.
+Turns on the ability to remove short-reads derived from a known organism, using Bowtie2 and samtools.
 
 This subworkflow is useful to remove reads that may come from a host, or a known contamination like the human reference genome. Human DNA contamination of (microbial) reference genomes is well known, so removal of these prior profiling both reduces the risks of false positives, and in _some cases_ a faster runtime (as less reads need to be profiled).
 
@@ -440,8 +442,9 @@ This subworkflow is useful to remove reads that may come from a host, or a known
 Alternatively, you can include the reference genome within your profiling databases and can turn off this subworkflow, with the trade off of a larger taxonomic profiling database.
 
 ### `--hostremoval_reference`
-Specify a path to the FASTA file (optionally gzipped) of the reference genome of the organism to be removed.\n\nIf you have two or more host organisms or contaminants you wish to remove, you can concatenate the FASTAs of the different taxa into a single one to provide to the pipeline.
+Specify a path to the FASTA file (optionally gzipped) of the reference genome of the organism to be removed.
 
+If you have two or more host organisms or contaminants you wish to remove, you can concatenate the FASTAs of the different taxa into a single one to provide to the pipeline.
 
 ### `--shortread_hostremoval_index`
 Specify the path to a _directory_ containing pre-made Bowtie2 reference index files (i.e. the directory containing `.bt1`, `.bt2` files etc.). These should sit in the same directory alongside the the reference file specified in `--hostremoval_reference`.

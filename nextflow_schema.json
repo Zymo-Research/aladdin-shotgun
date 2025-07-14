@@ -3,6 +3,7 @@
     "$id": "https://raw.githubusercontent.com/Zymo-Research/aladdin-shotgun/main/nextflow_schema.json",
     "title": "Aladdin shotgun pipeline parameters",
     "description": "Taxonomic profiling of shotgun metagenomic data",
+    "compatible_clouds": ["awsbatch", "zymohpc"],
     "metadata_columns": {
         "type": "object",
         "properties": {
@@ -156,6 +157,13 @@
                     "help_text": "Specifying a mimum read length filtering can speed up profiling by reducing the number of short unspecific reads that need to be match/aligned to the database.\n\n> Modifies tool parameter(s):\n> - removed from reads `--length_required`\n> - AdapterRemoval: `--minlength`",
                     "advanced": true
                 },
+		"posttrim_qc": {
+		    "type": "boolean",
+		    "default": false,
+		    "description": "Turn post-trim FASTQC off",
+		    "help_text": "Turning this option to true will cause Post Trimming QC results to show up in the MultiQC report.",
+		    "hidden": true
+		},
                 "shortread_complexityfilter_tool": {
                     "type": "string",
                     "default": "bbduk",
@@ -481,12 +489,6 @@
                     "maximum": 1000000,
 		            "advanced": true
                 },
-                "sourmash_strict_filtering": {
-                    "type": "boolean",
-                    "description": "Apply a strict filtering criteria to sourmash results to increase specificity at the expense of sensitivity. Require matches to genomes to have at least 93.5% identity or 1,000,000bp overlap.",
-                    "deafult": false,
-                    "advanced": true
-                },
                 "sourmash_trim_low_abund": {
                     "type": "boolean",
                     "description": "Runs trim-low-abund.py from the khmer software package, which removes low abundance, potentially erroneous kmers from data before taxonomy assignment. Only applies when sourmash databases were selected.",
@@ -538,14 +540,31 @@
                     "minimum": 1,
                     "advanced": true
                 },
-                "taxonomy_collapse_level": {
-                    "type": "integer",
-                    "description": "There are seven levels of taxonomy rankings: kingdom[1], phylum[2], class[3], order[4], family[5], genus[6], and species[7]. Diversity analyses will be conducted at the level chosen here. Default is 7, species level.",
-                    "default": 7,
-                    "minimum": 1,
-                    "maximum": 7,
-                    "advanced": true
-                },
+		"qiime_tax_agglom_max": {
+		    "type": "integer",
+		    "description": "There are seven levels of taxonomy rankings: kingdom[1], phylum[2], class[3], order[4], family[5], genus[6], and species[7]. ANCOMBC and heatmap analysis will be conducted at the levels between this maximum parameter and the qiime minimum taxa parameter. Default is 7, species level.",
+		    "default": 7,
+		    "minimum": 2,
+		    "maximum": 7,
+		    "hidden": true
+		},
+		"qiime_tax_agglom_min": {
+	            "type": "integer",
+		    "description": "There are seven levels of taxonomy rankings: kingdom[1], phylum[2], class[3], order[4], family[5], genus[6], and species[7]. ANCOMBC and heatmap analysis will be conducted at the levels between this minimum parameter and the qiime maximum taxa parameter. Default is 7, species level.",
+		    "default": 1,
+		    "minimum": 1,
+		    "maximum": 7,
+		    "hidden": true
+		},
+		"ancombc_fdr_cutoff": {
+		    "type": "number",
+		    "default": 0.05,
+		    "description": "FDR threshold for a taxa to be considered significant and displayed on the ANCOM-BC plot",
+		    "help_text": "FDR threshold for a taxa to be considered significant and displayed on the ANCOM-BC plot",
+		    "minimum": 0,
+		    "maximum": 1,
+		    "advanced": true
+	        },
                 "skip_heatmap": {
                     "type": "boolean",
                     "description": "Remove off heatmap plot from MultiQC report",
@@ -801,6 +820,11 @@
                     "description": "Whether to ignore samples that fail QC and taxonomy profiling steps and carry on with good samples. Default True. Set to False to force the pipeline to abort when any samples fails.",
                     "default": true,
                     "hidden": true
+                },
+                "report_name": {
+                    "type": "string",
+                    "description": "Name for report title and report file name.",
+                    "hidden": true
                 }
             }
         },
@@ -834,18 +858,6 @@
                 }
             }
         },
-        "reference_dataset_comparison_options": {
-            "title": "Reference dataset comparison options",
-            "type": "object",
-            "description": "Compare user samples with reference dataset. This will generate additional visualisations in the report.",
-            "properties": {
-                "aladdin_ref_dataset": {
-                    "type": "string",
-                    "description": "Choose an appropriate reference dataset to compare against. See pipeline repo for details on the reference datasets.",
-                    "enum": ["Aladdin-healthy_gut"]
-                }
-            }
-        },
         "amr_options": {
             "title": "AMR analysis options",
             "type": "object",
@@ -867,7 +879,6 @@
                 "amr_index_files": {
                     "type": "string",
                     "description": "Path to files related to AMR analysis.",
-                    "default": "s3://aladdin-genomes/shotgun_reference/amrplusplus_ref/",
                     "hidden": true
                 }
             }
@@ -906,9 +917,6 @@
         },
         {
             "$ref": "#/definitions/reference_genome_options"
-        },
-        {
-            "$ref": "#/definitions/reference_dataset_comparison_options"
         },
         {
             "$ref": "#/definitions/amr_options"

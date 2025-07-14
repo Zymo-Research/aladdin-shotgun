@@ -20,6 +20,9 @@ process QIIME_ALPHARAREFACTION {
     script:
     def maxdepth = min_total.toInteger() < 250000 ? min_total.toInteger() : 250000 
     """
+    mkdir tmpdir
+    export TMPDIR=\$PWD/tmpdir
+    
     qiime diversity alpha-rarefaction  \
         --i-table $table  \
         --p-max-depth $maxdepth  \

@@ -19,7 +19,7 @@ nextflow.enable.dsl = 2
 */
 
 params.fasta = WorkflowMain.getGenomeAttribute(params, 'fasta')
-params.run_name = workflow.runName
+params.run_name = params.report_name ?: workflow.runName
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

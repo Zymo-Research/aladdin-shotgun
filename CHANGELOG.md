@@ -1,4 +1,27 @@
 # aladdin-shotgun: Changelog
+## 0.0.14
+
+### `Removed`
+- Commented out code comparing user sample to reference dataset. We are moving this function to another application.
+
+## 0.0.13
+
+### `Changed`
+- Added code related to running the pipelin on ZymoCloud.
+
+## 0.0.12
+
+### `Changed`
+- Added a new version of sourmash database which includes GTDB release 214 at representative genome level. Changed default database to this.
+- Accordingly, changed default sourmash kmer_size to 31.
+
+### `Removed`
+- The experimental function to highlight the abundance of taxa of interest is now hidden.
+
+## 0.0.9
+
+### `Changed`
+- Changed sourmash threshold_bp to 5000
 
 ## v0.0.6
 

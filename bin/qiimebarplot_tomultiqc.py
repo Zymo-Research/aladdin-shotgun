@@ -18,7 +18,7 @@ def qiimebarplot_tomultiqc(table, levelnum):
         f[col] = (f[col]/f[col].sum())*100
     f.insert(0, "#OTU ID", f.index)
 
-    f.to_csv("allsamples_exported_QIIME_barplot/level-"+levelnum+".csv", index=False, header=True)
+    f.to_csv("./level-"+levelnum+".csv", index=False, header=True)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="""Parse metaphlan table""")

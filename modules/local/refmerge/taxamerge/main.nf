@@ -20,18 +20,18 @@ process REFMERGE_TAXAMERGE {
     qiime taxa collapse \
         --i-table user_table.qza \
         --i-taxonomy user_taxonomy.qza \
-        --p-level ${params.taxonomy_collapse_level} \
-        --o-collapsed-table user_table-${params.taxonomy_collapse_level}.qza 
+        --p-level ${params.qiime_tax_agglom_max} \
+        --o-collapsed-table user_table-${params.qiime_tax_agglom_max}.qza 
     
     qiime taxa collapse \
         --i-table ref_table.qza \
         --i-taxonomy ref_taxonomy.qza \
-        --p-level ${params.taxonomy_collapse_level} \
-        --o-collapsed-table ref_table-${params.taxonomy_collapse_level}.qza
+        --p-level ${params.qiime_tax_agglom_max} \
+        --o-collapsed-table ref_table-${params.qiime_tax_agglom_max}.qza
 
     # merge user and ref tables
     qiime feature-table merge \
-        --i-tables user_table-${params.taxonomy_collapse_level}.qza ref_table-${params.taxonomy_collapse_level}.qza \
+        --i-tables user_table-${params.qiime_tax_agglom_max}.qza ref_table-${params.qiime_tax_agglom_max}.qza \
         --o-merged-table refmerged-table.qza
 
     qiime feature-table filter-features \

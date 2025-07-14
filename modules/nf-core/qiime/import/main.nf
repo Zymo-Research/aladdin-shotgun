@@ -13,6 +13,9 @@ process QIIME_IMPORT {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir tmpdir
+    export TMPDIR=\$PWD/tmpdir
+    
     qiime tools import --input-path $abs_profile --type 'FeatureTable[Frequency]' --input-format BIOMV100Format --output-path ${prefix}_qiime_absfreq_table.qza
     
     cat <<-END_VERSIONS > versions.yml

@@ -73,10 +73,7 @@ kbd {
     text-align: left;
 }
 .side-nav h1 a {
-    padding: 20px 0 15px;
-}
-.side-nav h1 img {
-    height: 26px;
+    padding: 15px 0 15px;
 }
 .side-nav h1 small {
     font-size: 12px;
@@ -178,7 +175,7 @@ kbd {
 #page_title img {
     padding: 10px;
     padding-left: 30px;
-    max-width: 360px;
+    max-width: 240px;
 }
 .mqc-section-comment {
     border-left: 5px solid #8eb9dd;

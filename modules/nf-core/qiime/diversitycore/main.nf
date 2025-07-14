@@ -17,6 +17,9 @@ process QIIME_DIVERSITYCORE {
 
     script:
     """
+    mkdir tmpdir
+    export TMPDIR=\$PWD/tmpdir
+    
     qiime diversity core-metrics \
         --i-table $qza \
         --p-sampling-depth ${min_total.toInteger()} \

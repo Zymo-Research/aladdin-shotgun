@@ -18,6 +18,9 @@ process QIIME_BETAGROUPCOMPARE {
 
     script:
     """ 
+    mkdir tmpdir
+    export TMPDIR=\$PWD/tmpdir
+    
     qiime diversity beta-group-significance \
         --i-distance-matrix ${distance} \
         --m-metadata-file ${metadata} \

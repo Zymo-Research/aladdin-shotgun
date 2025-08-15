@@ -3,7 +3,7 @@ process MULTIQC {
     stageInMode 'copy'
 
     input:
-    path  multiqc_files, stageAs: "?/*"
+    path  multiqc_files, stageAs: "multiqc_input/*"
     path(multiqc_config)
     path(extra_multiqc_config)
     path(multiqc_logo)
@@ -23,7 +23,7 @@ process MULTIQC {
     def args = task.ext.args ?: ''
     def config = multiqc_config ? "--config $multiqc_config" : ''
     def extra_config = extra_multiqc_config ? "--config $extra_multiqc_config" : ''
-    def rtitle = params.run_name ? "--title \"Shotgun report for ${params.run_name}\"" : ''
+    def rtitle = params.run_name ? "--title \"MGscan Shotgun Metagenomics report for ${params.run_name}\"" : ''
     def rfilename = params.run_name ? "--filename " + params.run_name.replaceAll('\\W','_').replaceAll('_+','_') + "_multiqc_report" : ''
     def comment = warnings ? "--comment \"$warnings\"" : '' 
     """
@@ -38,7 +38,7 @@ process MULTIQC {
         $extra_config \\
         $rtitle $rfilename \\
         $comment \\
-        .
+        ./multiqc_input
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

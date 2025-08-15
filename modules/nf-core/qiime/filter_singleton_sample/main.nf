@@ -17,6 +17,9 @@ process QIIME_FILTER_SINGLETON_SAMPLE {
 
     script:
     """
+    mkdir tmpdir
+    export TMPDIR=\$PWD/tmpdir
+    
     qiime feature-table filter-samples \
         --i-table $qza \
         --m-metadata-file $metadata \

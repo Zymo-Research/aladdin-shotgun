@@ -58,6 +58,14 @@ if (params.profiler=='malt' && params.run_krona && !params.krona_taxonomy_direct
 //Not supporting sequential kraken2-bracken yet
 //if (params.run_bracken && !params.run_kraken2) exit 1, 'ERROR: You are attempting to run Bracken without running kraken2. This is not possible! Please set --run_kraken2 as well.'
 
+if (params.qiime_tax_agglom_min > params.qiime_tax_agglom_max) {
+    log.error "Incompatible parameters: `--qiime_tax_agglom_min` may not be greater than `--qiime_tax_agglom_max`."
+    System.exit(1)
+}
+if (params.qiime_tax_agglom_max < 2) {
+    log.error "Incompatible parameter setting: qiime_tax_agglom_max must be higher than 1."
+    System.exit(1)
+}
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES
@@ -85,8 +93,7 @@ include { LONGREAD_HOSTREMOVAL          } from '../subworkflows/local/longread_h
 include { SHORTREAD_COMPLEXITYFILTERING } from '../subworkflows/local/shortread_complexityfiltering'
 include { PROFILING                     } from '../subworkflows/local/profiling'
 include { DIVERSITY                     } from '../subworkflows/local/diversity'
-include { REFMERGE_DIVERSITY            } from '../subworkflows/local/refmerge_diversity'
-include { VISUALIZATION_KRONA           } from '../subworkflows/local/visualization_krona'
+//include { REFMERGE_DIVERSITY            } from '../subworkflows/local/refmerge_diversity'
 include { STANDARDISATION_PROFILES      } from '../subworkflows/local/standardisation_profiles'
 include { AMRPLUSPLUS                   } from '../subworkflows/local/amrplusplus'
 
@@ -278,7 +285,7 @@ workflow TAXPROFILER {
     /*
         SUBWORKFLOW: DIVERSITY with Qiime2
     */
-    DIVERSITY ( PROFILING.out.qiime_profiles, PROFILING.out.qiime_taxonomy, INPUT_CHECK.out.groups )
+    DIVERSITY ( PROFILING.out.qiime_profiles, PROFILING.out.qiime_taxonomy, INPUT_CHECK.out.groups, params.qiime_tax_agglom_min, params.qiime_tax_agglom_max, params.ancombc_fdr_cutoff )
     ch_multiqc_files = ch_multiqc_files.mix( DIVERSITY.out.mqc.collect().ifEmpty([]) )
     ch_versions = ch_versions.mix( DIVERSITY.out.versions )
     ch_output_file_paths = ch_output_file_paths.mix(DIVERSITY.out.output_paths)
@@ -287,6 +294,7 @@ workflow TAXPROFILER {
     /*
         SUBWORKFLOW: DIVERSITY with reference database
     */
+    /*
     if ( params.aladdin_ref_dataset ){
         if ( !params.aladdin_ref_db.containsKey(params.aladdin_ref_dataset) ) {
             exit 1, "The reference dataset '${params.aladdin_ref_dataset}' is not available in the Aladdin reference database."
@@ -319,13 +327,7 @@ workflow TAXPROFILER {
         ch_multiqc_files = ch_multiqc_files.mix(REFMERGE_DIVERSITY.out.mqc.collect().ifEmpty([]))
         ch_output_file_paths = ch_output_file_paths.mix(REFMERGE_DIVERSITY.out.output_paths)
     }
-    /*
-        SUBWORKFLOW: VISUALIZATION_KRONA
     */
-    if ( params.run_krona ) {
-        VISUALIZATION_KRONA ( PROFILING.out.classifications, PROFILING.out.profiles, ch_db )
-        ch_versions = ch_versions.mix( VISUALIZATION_KRONA.out.versions )
-    }
 
     /*
         SUBWORKFLOW: PROFILING STANDARDISATION

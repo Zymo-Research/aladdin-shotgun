@@ -18,6 +18,9 @@ process QIIME_ALPHADIVERSITY {
 
     script:
     """
+    mkdir tmpdir
+    export TMPDIR=\$PWD/tmpdir
+
     qiime diversity alpha-group-significance \
         --i-alpha-diversity ${vectors.baseName}.qza \
         --m-metadata-file $group_metadata \

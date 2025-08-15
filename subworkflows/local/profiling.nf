@@ -297,6 +297,7 @@ workflow PROFILING {
         ch_multiqc_files = ch_multiqc_files.mix( SOURMASH_QIIMEPREP.out.mqc.collect().ifEmpty([]) )
         ch_qiime_profiles = ch_qiime_profiles.mix( SOURMASH_QIIMEPREP.out.biom )
         ch_taxonomy = ch_taxonomy.mix( SOURMASH_QIIMEPREP.out.taxonomy )
+        ch_raw_classifications = ch_raw_classifications.mix( SOURMASH_GATHER.out.gather )
 
     }    
 
@@ -391,14 +392,15 @@ workflow PROFILING {
         .map { it[0] }
         .collect()
         .map {
-            "The following samples failed taxonomy profiling steps or didn't have any identifiable microbe:\n${it.join("; ")}\nPlease contact us if you want to troubleshoot them."
+            msg = "The following samples failed taxonomy profiling steps or didn't have any identifiable microbe:\n${it.join("; ")}\nPlease contact us if you want to troubleshoot them."
+            if (params.ignore_failed_samples) {
+                log.warn "$msg"
+                return msg
+            } else{
+                return error(msg)
+            }
         }
         .set {ch_warning_message }
-    ch_warning_message
-        .subscribe {
-            log.error "$it"
-            params.ignore_failed_samples ? { log.warn "Ignoring failed samples and continue!" } : System.exit(1)
-        }
 
     emit:
     classifications = ch_raw_classifications

@@ -53,9 +53,6 @@ workflow DIVERSITY {
         ch_versions = ch_versions.mix( KRONA_REPORT.out.versions )
         ch_output_file_paths = ch_output_file_paths.mix(KRONA_REPORT.out.html.map{ "${params.outdir}/krona/" + it.getName() } )
     }
- 
-    HEATMAP_INPUT( QIIME_BARPLOT.out.barplot_composition.collect(), groups, params.top_taxa )
-    ch_multiqc_files = ch_multiqc_files.mix( HEATMAP_INPUT.out.taxo_heatmap.collect())
 
     QIIME2_EXPORT( QIIME2_FILTERSAMPLES.out.filtered_counts_qza, QIIME2_PREPTAX.out.taxonomy_qza, QIIME2_PREPTAX.out.taxonomy_tsv, tax_agglom_min, tax_agglom_max )
     ch_output_file_paths = ch_output_file_paths.mix(
@@ -75,6 +72,9 @@ workflow DIVERSITY {
     ch_multiqc_files = ch_multiqc_files.mix( QIIME2_DIVERSITY.out.mqc )
     ch_output_file_paths = ch_output_file_paths.mix( QIIME2_DIVERSITY.out.output_paths )
     ch_versions = ch_versions.mix( QIIME2_DIVERSITY.out.versions )
+
+    HEATMAP_INPUT( QIIME_BARPLOT.out.barplot_composition.collect(), QIIME2_DIVERSITY.out.filtered_metadata, params.top_taxa )
+    ch_multiqc_files = ch_multiqc_files.mix( HEATMAP_INPUT.out.taxo_heatmap.collect())
     
     QIIME2_ANCOMBC( QIIME2_DIVERSITY.out.filtered_metadata, QIIME2_EXPORT.out.collapse_qza, QIIME2_PREPTAX.out.taxonomy_qza, tax_agglom_min, tax_agglom_max, ancombc_fdr_cutoff )
     ch_output_file_paths = ch_output_file_paths.mix(

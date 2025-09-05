@@ -1,8 +1,6 @@
 process KRONA_PARSE {
     label 'process_low'
 
-    conda (params.enable_conda ? { exit 1 "QIIME2 has no conda package" } : null)
-
     input:
     path(rel_tsv)
 

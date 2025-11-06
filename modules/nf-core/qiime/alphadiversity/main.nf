@@ -2,7 +2,7 @@ process QIIME_ALPHADIVERSITY {
     label 'process_low'
     tag "${vectors.baseName}"
 
-    container 'quay.io/qiime2/core:2023.9'
+    container 'quay.io/qiime2/core:2023.2'
 
     when:
     !params.skip_alphadiversity

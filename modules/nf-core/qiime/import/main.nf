@@ -1,7 +1,7 @@
 process QIIME_IMPORT {
     label 'process_low'
     
-    container 'quay.io/qiime2/core:2023.9'
+    container 'quay.io/qiime2/core:2023.2'
     
     input:
     tuple val(meta), path(abs_profile)

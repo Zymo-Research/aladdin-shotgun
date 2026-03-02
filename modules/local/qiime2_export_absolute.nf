@@ -13,7 +13,7 @@ process QIIME2_EXPORT_ABSOLUTE {
     output:
     path("feature-table.tsv")        , emit: tsv
     path("feature-table.biom")       , emit: biom
-    path("table-[2-7].qza")          , emit: collapse_qza
+    path("table-[${tax_agglom_min}-${tax_agglom_max}].qza")          , emit: collapse_qza
     path("abs-abund-table-*.tsv")    , emit: abundtable
     path "versions.yml"              , emit: versions
 

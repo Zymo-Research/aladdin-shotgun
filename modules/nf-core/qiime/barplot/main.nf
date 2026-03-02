@@ -24,7 +24,7 @@ process QIIME_BARPLOT {
     qiime taxa barplot --i-table $counts --i-taxonomy $taxonomy --m-metadata-file $metadata --o-visualization allsamples_compbarplot.qzv
     qiime tools export --input-path allsamples_compbarplot.qzv --output-path allsamples_exported_QIIME_barplot
     
-    array=( \$( seq 1 $taxa_max ) )
+    array=( \$( seq 1 ${taxa_max} ) )
 
     for i in \${array[@]}
     do

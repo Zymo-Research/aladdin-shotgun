@@ -12,6 +12,7 @@ include { QIIME2_ANCOMBC                               } from '../../subworkflow
 include { QIIME_IMPORT                                  } from '../../modules/nf-core/qiime/import/main'
 include { QIIME2_FILTERSAMPLES                          } from '../../modules/local/qiime2_filtersamples'
 include { QIIME2_PREPTAX                                } from '../../modules/local/qiime2_preptax'
+include { FIND_MAX_AVAILABLE_TAX                        } from '../../modules/local/find_max_available_tax'
 include { QIIME_BARPLOT                                 } from '../../modules/nf-core/qiime/barplot/main'
 include { KRONA_REPORT                                  } from '../../subworkflows/local/krona_report'
 include { GROUP_COMPOSITION                             } from '../../modules/local/group_composition'
@@ -41,7 +42,17 @@ workflow DIVERSITY {
     
     QIIME2_PREPTAX( qiime_taxonomy.collect() )
 
-    QIIME_BARPLOT( QIIME2_FILTERSAMPLES.out.filtered_counts_qza, QIIME2_PREPTAX.out.taxonomy_qza, groups, tax_agglom_max )
+    FIND_MAX_AVAILABLE_TAX ( QIIME2_PREPTAX.out.taxonomy_tsv )
+    FIND_MAX_AVAILABLE_TAX.out.max_tax.subscribe { it ->
+        if (it.toInteger() < tax_agglom_max) { log.warn "Max available taxonomy is $it, but requested tax_agglom_max=$tax_agglom_max, switching to $it" }
+        if (it.toInteger() < tax_agglom_min) { log.warn "Max available taxonomy is $it, but requested tax_agglom_min=$tax_agglom_min, switching to $it" }
+    }
+
+    tax_min = FIND_MAX_AVAILABLE_TAX.out.max_tax.toInteger().map{ [it, tax_agglom_min].min() }
+    tax_max = FIND_MAX_AVAILABLE_TAX.out.max_tax.toInteger().map{ [it, tax_agglom_max].min() }
+
+
+    QIIME_BARPLOT( QIIME2_FILTERSAMPLES.out.filtered_counts_qza, QIIME2_PREPTAX.out.taxonomy_qza, groups, tax_max )
     ch_versions = ch_versions.mix( QIIME_BARPLOT.out.versions )
     ch_multiqc_files = ch_multiqc_files.mix( QIIME_BARPLOT.out.barplot_composition.collect() )
     ch_output_file_paths = ch_output_file_paths.mix(
@@ -54,7 +65,7 @@ workflow DIVERSITY {
         ch_output_file_paths = ch_output_file_paths.mix(KRONA_REPORT.out.html.map{ "${params.outdir}/krona/" + it.getName() } )
     }
 
-    QIIME2_EXPORT( QIIME2_FILTERSAMPLES.out.filtered_counts_qza, QIIME2_PREPTAX.out.taxonomy_qza, QIIME2_PREPTAX.out.taxonomy_tsv, tax_agglom_min, tax_agglom_max )
+    QIIME2_EXPORT( QIIME2_FILTERSAMPLES.out.filtered_counts_qza, QIIME2_PREPTAX.out.taxonomy_qza, QIIME2_PREPTAX.out.taxonomy_tsv, tax_min, tax_max )
     ch_output_file_paths = ch_output_file_paths.mix(
         QIIME2_EXPORT.out.abs_taxa_levels.flatten().map{ "${params.outdir}/qiime2/export/" + it.getName() }
         )
@@ -76,7 +87,7 @@ workflow DIVERSITY {
     HEATMAP_INPUT( QIIME_BARPLOT.out.barplot_composition.collect(), QIIME2_DIVERSITY.out.filtered_metadata, params.top_taxa )
     ch_multiqc_files = ch_multiqc_files.mix( HEATMAP_INPUT.out.taxo_heatmap.collect())
     
-    QIIME2_ANCOMBC( QIIME2_DIVERSITY.out.filtered_metadata, QIIME2_EXPORT.out.collapse_qza, QIIME2_PREPTAX.out.taxonomy_qza, tax_agglom_min, tax_agglom_max, ancombc_fdr_cutoff )
+    QIIME2_ANCOMBC( QIIME2_DIVERSITY.out.filtered_metadata, QIIME2_EXPORT.out.collapse_qza, QIIME2_PREPTAX.out.taxonomy_qza, tax_min, tax_max, ancombc_fdr_cutoff )
     ch_output_file_paths = ch_output_file_paths.mix(
         QIIME2_ANCOMBC.out.ch_output_files.flatten().map{ "${params.outdir}/qiime2/ancombc/visualizations/qzv/" + it.getName() }
         )

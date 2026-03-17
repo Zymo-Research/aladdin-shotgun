@@ -21,13 +21,16 @@ workflow QIIME2_ANCOMBC {
         .set{ ch_for_ancom_tax }
     QIIME2_ANCOMBC_INITIAL ( ch_for_ancom_tax )
 
-    QIIME2_ANCOMBC_INITIAL.out.failcheck.subscribe{ failfilter, taxlevel -> 
-        if (failfilter == "true") {
+    QIIME2_ANCOMBC_INITIAL.out.failcheck.subscribe{ failfilter, taxlevel ->
+        if (taxlevel == "1") {
+            log.info( "Skipping taxlevel 1 for ANCOM-BC" )
+        } 
+        else if (failfilter == "true") {
             log.warn( "WARNING: Summing your data at taxonomic level $taxlevel produced less than three rows (taxa), ANCOM can't proceed.")
         }        
     }
 
-    QIIME2_ANCOMBC_FILTER ( ch_metadata.combine( QIIME2_ANCOMBC_INITIAL.out.ancom ), tax_agglom_max, fdr_cutoff )
+    QIIME2_ANCOMBC_FILTER ( ch_metadata.combine( QIIME2_ANCOMBC_INITIAL.out.ancom ), tax_agglom_max.collect(), fdr_cutoff )
     QIIME2_ANCOMBC_PARSE(QIIME2_ANCOMBC_FILTER.out.to_mqc, QIIME2_ANCOMBC_FILTER.out.ref_group )
 
     emit:

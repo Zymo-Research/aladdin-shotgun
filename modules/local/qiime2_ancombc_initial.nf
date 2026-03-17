@@ -10,7 +10,7 @@ process QIIME2_ANCOMBC_INITIAL {
 
     output:
     tuple path("*ancombc.qza"), val(taxlevel)  , emit: ancom, optional: true
-    path("*ancombc.qza")
+    path("*ancombc.qza")                       , optional: true
     tuple env(failfilter), val(taxlevel)       , emit: failcheck
     path "versions.yml"                        , emit: versions
 
@@ -27,6 +27,8 @@ process QIIME2_ANCOMBC_INITIAL {
     biom convert -i exported/feature-table.biom -o ${table.baseName}-level-${taxlevel}.feature-table.tsv --to-tsv
 
     if [ \$(grep -v '^#' -c ${table.baseName}-level-${taxlevel}.feature-table.tsv) -lt 3 ]; then
+        failfilter="true"
+    elif [ ${taxlevel} == 1 ]; then
         failfilter="true"
     else
         qiime composition ancombc \

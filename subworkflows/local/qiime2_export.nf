@@ -9,20 +9,10 @@ workflow QIIME2_EXPORT {
     ch_asv
     taxonomy_qza
     taxonomy_tsv
-    tax_agglom_min
-    tax_agglom_max
+    tax_min
+    tax_max
 
     main:
-    //Find max available taxonomy level, check against specified tax levels
-    FIND_MAX_AVAILABLE_TAX ( taxonomy_tsv )
-    FIND_MAX_AVAILABLE_TAX.out.max_tax.subscribe { it ->
-        if (it.toInteger() < tax_agglom_max) { log.warn "Max available taxonomy is $it, but requested tax_agglom_max=$tax_agglom_max, switching to $it" }
-        if (it.toInteger() < tax_agglom_min) { log.warn "Max available taxonomy is $it, but requested tax_agglom_min=$tax_agglom_min, switching to $it" }
-    }
-
-    tax_min = FIND_MAX_AVAILABLE_TAX.out.max_tax.toInteger().map{ [it, tax_agglom_min].min() }
-    tax_max = FIND_MAX_AVAILABLE_TAX.out.max_tax.toInteger().map{ [it, tax_agglom_max].min() }
-
     //export_filtered_dada_output (optional)
     QIIME2_EXPORT_ABSOLUTE ( ch_asv, taxonomy_qza, taxonomy_tsv, tax_min, tax_max )
 

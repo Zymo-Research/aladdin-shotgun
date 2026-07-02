@@ -33,6 +33,7 @@ process METAPHLAN4_METAPHLAN4 {
         $input_data \\
         $bowtie2_out \\
         --bowtie2db $metaphlan_db \\
+        --offline \\
         --output_file ${prefix}_profile.txt
 
     cat <<-END_VERSIONS > versions.yml

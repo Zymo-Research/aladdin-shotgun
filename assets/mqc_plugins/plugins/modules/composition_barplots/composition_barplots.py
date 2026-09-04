@@ -111,8 +111,10 @@ class MultiqcModule(BaseMultiqcModule):
                 config = {
                 'id': 'Composition_barplots' + level_interface_id,
                 'use_legend': True,
+                # Values are already percentages, so no Counts/Percentages switch is offered.
+                # cpswitch_c_active must stay unset: with the switch off, a False value makes the
+                # flat-image fallback used above 100 samples emit the plot with display:none.
                 'cpswitch': False,                       # Show the 'Counts /   Percentages' switch?
-                'cpswitch_c_active': False,
                 'xlab': 'Samples',                           # X axis label
                 'ylab': 'Percentage',
                 'ymin': 0,

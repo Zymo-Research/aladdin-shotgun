@@ -56,8 +56,10 @@ class MultiqcModule(BaseMultiqcModule):
         pconfig = {
             "id": "interestgroup_composition_bargraph",
             "title": "Abundances of Groups of Interest",
+            # Values are already percentages, so no Counts/Percentages switch is offered.
+            # cpswitch_c_active must stay unset: with the switch off, a False value makes the
+            # flat-image fallback used above 100 samples emit the plot with display:none.
             "cpswitch": False,
-            "cpswitch_c_active": False,
             "yDecimals": True,
             "ymax": 100,
             "ymin": 0,
